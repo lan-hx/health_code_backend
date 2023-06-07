@@ -8,7 +8,6 @@ env:
   REGISTRY: docker.io
   IMAGE_NAME: health_code_backend
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +15,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: install deps
+        run: npm install
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: |
+            ${{github.workspace}}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
