@@ -7,7 +7,7 @@ const { connect } = require('http2');
 const app = express();
     
 // Replace the uri string with your connection string.
-const uri = "mongodb://127.0.0.1:27017";
+const uri = "mongodb://host.docker.internal:27017";
 const client = new MongoClient(uri);
 const database = client.db('mongodbQRCodeDB');
 let POST;
