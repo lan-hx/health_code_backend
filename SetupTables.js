@@ -7,7 +7,7 @@ db.createCollection("Users", {
      $jsonSchema: {
         bsonType: "object",
         title: "Users Validation",
-        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone", "health_code" ],
+        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone" ],
         properties: {
             _id: {bsonType: "objectId"},
             u_name: {bsonType: ["null", "string"]},
@@ -15,12 +15,15 @@ db.createCollection("Users", {
             u_email: {bsonType: ["null", "string"]},
             u_phone: {bsonType: ["null", "string"]},
             u_addr: {bsonType: ["null", "string"]},
-            health_code: {bsonType: "int"},
+            health_code: {bsonType: "objectId"},
+            health_state: {enum: ["green", "yellow", "red"]}
         },
         additionalProperties: false,
       }
   }
 } );
+
+
 
 // // create Admins table
 db.createCollection("Admins",{
@@ -239,5 +242,6 @@ db.createCollection("Tokens",{
     }  
   }
 });
+
 
 console.log("Database created successfully");

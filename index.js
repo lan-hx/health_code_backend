@@ -1,4 +1,5 @@
 const http = require('http');
+const bodyParser = require('body-parser');
 const querystring = require('querystring');
 const {MongoClient, ObjectId} = require("mongodb");
 const Server = require('mongodb').Server;
@@ -11,7 +12,9 @@ const app = express();
 const config = require('./config/config.json');
 
 // "uri":"mongodb://host.docker.internal:27017",    
-const uri = config.mongodb_uri;
+uri = config.mongodb_uri;
+uri = "mongodb://localhost:27017";
+
 const client = new MongoClient(uri);
 const database = client.db('mongodbQRCodeDB');
 console.log("successfully connect to mongodbQRCodeDB");
@@ -29,12 +32,15 @@ const result = {
 
 const buffers = [];
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.post('/LoginUser', (req, res) =>{
   let str = '';
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = LoginUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -50,7 +56,7 @@ app.post('/GetHealthCodeStatus', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetHealthCodeStatus(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -63,7 +69,7 @@ app.post('/GetUserInfo', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetUserInfo(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -76,7 +82,7 @@ app.post('/GetTests', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetTests(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -89,7 +95,7 @@ app.post('/GetNotifications', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetNotifications(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -103,7 +109,7 @@ app.post('/GetTestStationList', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetTestStationList(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -116,7 +122,7 @@ app.post('/GetHealthCodeComplainList', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetHealthCodeComplainList(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -129,7 +135,7 @@ app.post('/GetVaccinumList', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVaccinumList(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -141,7 +147,7 @@ app.post('/GetVaccinumAppointmentAddress', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVaccinumAppointmentAddress(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -154,7 +160,7 @@ app.post('/GetVaccinumAppointmentState', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVaccinumAppointmentState(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -167,7 +173,7 @@ app.post('/ScanLocationCode', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = ScanLocationCode(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -180,7 +186,7 @@ app.post('/SetUserInfo', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetUserInfo(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -193,7 +199,7 @@ app.post('/HealthCodeComplain', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = HealthCodeComplain(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -206,7 +212,7 @@ app.post('/AppointVaccinum', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AppointVaccinum(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -219,7 +225,7 @@ app.post('/VaccinumAppointRetract', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = VaccinumAppointRetract(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -232,7 +238,7 @@ app.post('/GetHealthCode', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetHealthCode(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -245,7 +251,7 @@ app.post('/SetHealthCode', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetHealthCode(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -258,7 +264,7 @@ app.post('/GetUserAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetUserAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -271,7 +277,7 @@ app.post('/SetUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -285,7 +291,7 @@ app.post('/AddUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -298,7 +304,7 @@ app.post('/DeleteUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeleteUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -311,7 +317,7 @@ app.post('/GetStatisticsData', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetStatisticsData(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -324,7 +330,7 @@ app.post('/GetHealthCodeAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetHealthCodeAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -337,7 +343,7 @@ app.post('/GetVisitPlacesAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVisitPlacesAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -350,7 +356,7 @@ app.post('/GetVisitPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVisitPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -363,7 +369,7 @@ app.post('/AddVisitPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddVisitPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -376,7 +382,7 @@ app.post('/DeleteVisitPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeleteVisitPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -390,7 +396,7 @@ app.post('/GetVaccinationAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVaccinationAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -403,7 +409,7 @@ app.post('/GetVaccination', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetVaccination(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -416,7 +422,7 @@ app.post('/AddVaccination', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddVaccination(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -430,7 +436,7 @@ app.post('/DeleteVaccination', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeleteVaccination(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -444,7 +450,7 @@ app.post('/GetPlacesAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetPlacesAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -458,7 +464,7 @@ app.post('/GetPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -472,7 +478,7 @@ app.post('/AddPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -486,7 +492,7 @@ app.post('/DeletePlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeletePlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -500,7 +506,7 @@ app.post('/SetPlaces', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetPlaces(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -514,7 +520,7 @@ app.post('/SetVaccination', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetVaccination(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -528,7 +534,7 @@ app.post('/GetNucleicAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetNucleicAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -542,7 +548,7 @@ app.post('/GetNucleic', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetNucleic(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -556,7 +562,7 @@ app.post('/SetNucleic', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetNucleic(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -570,7 +576,7 @@ app.post('/AddNucleic', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddNucleic(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -584,7 +590,7 @@ app.post('/DeleteNucleic', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeleteNucleic(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -598,7 +604,7 @@ app.post('/GetAdminUserAll', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetAdminUserAll(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -611,7 +617,7 @@ app.post('/GetAdminUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = GetAdminUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -624,7 +630,7 @@ app.post('/SetAdminUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = SetAdminUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -638,7 +644,7 @@ app.post('/AddAdminUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = AddAdminUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -651,7 +657,7 @@ app.post('/DeleteAdminUser', (req, res) =>{
   const i = 0;
 
   {
-    POST = querystring.parse(req.body);
+    POST = (req.body);
     const result = DeleteAdminUser(POST).then((response) => {
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify(response));
@@ -1537,7 +1543,8 @@ async function AddUser(POST) {
       u_card_id: POST.card_id,
       u_phone: POST.phone,
       u_email: POST.email,
-      health_code: 1 // Set health_code as null initially
+      health_code: new ObjectId(),
+      health_state:"green"
     };
 
     // Insert the user document into the collection
