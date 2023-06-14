@@ -27,20 +27,6 @@ const result = {
 
 const buffers = [];
 
-// http.createServer(function (req, res) {
-//   let str = '';
-//   const i = 0;
-//
-//   req.on('end', funcerystring.parse(str);
-
-//     const RET = get_datreq.bodyOST)
-//       .then((response) => {
-//         res.writeHead(200, {'Content-type': 'application/json'});
-//         res.end(JSON.stringify(response));
-//       });
-//   }); // 数据全部到达
-// }).listen(connect_number);
-
 app.post('/LoginUser', (req, res) =>{
   let str = '';
   const i = 0;
@@ -57,7 +43,7 @@ app.post('/LoginUser', (req, res) =>{
 
 
 
-app.post('GetHealthCodeStatus', (req, res) =>{
+app.post('/GetHealthCodeStatus', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -70,7 +56,7 @@ app.post('GetHealthCodeStatus', (req, res) =>{
   }
 });
 
-app.post('GetUserInfo', (req, res) =>{
+app.post('/GetUserInfo', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -83,7 +69,7 @@ app.post('GetUserInfo', (req, res) =>{
   }
 });
 
-app.post('GetTests', (req, res) =>{
+app.post('/GetTests', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -96,7 +82,7 @@ app.post('GetTests', (req, res) =>{
   }
 });
 
-app.post('GetNotifications', (req, res) =>{
+app.post('/GetNotifications', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -110,7 +96,7 @@ app.post('GetNotifications', (req, res) =>{
 });
 
 
-app.post('GetTestStationList', (req, res) =>{
+app.post('/GetTestStationList', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -123,7 +109,7 @@ app.post('GetTestStationList', (req, res) =>{
   }
 });
 
-app.post('GetHealthCodeComplainList', (req, res) =>{
+app.post('/GetHealthCodeComplainList', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -136,7 +122,7 @@ app.post('GetHealthCodeComplainList', (req, res) =>{
   }
 });
 
-app.post('GetVaccinumList', (req, res) =>{
+app.post('/GetVaccinumList', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -148,8 +134,7 @@ app.post('GetVaccinumList', (req, res) =>{
     });
   }
 });
-
-app.post('GetVaccinumAppointmentAddress', (req, res) =>{
+app.post('/GetVaccinumAppointmentAddress', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -162,7 +147,7 @@ app.post('GetVaccinumAppointmentAddress', (req, res) =>{
   }
 });
 
-app.post('GetVaccinumAppointmentState', (req, res) =>{
+app.post('/GetVaccinumAppointmentState', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -175,7 +160,7 @@ app.post('GetVaccinumAppointmentState', (req, res) =>{
   }
 });
 
-app.post('ScanLocationCode', (req, res) =>{
+app.post('/ScanLocationCode', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -188,7 +173,7 @@ app.post('ScanLocationCode', (req, res) =>{
   }
 });
 
-app.post('SetUserInfo', (req, res) =>{
+app.post('/SetUserInfo', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -201,7 +186,7 @@ app.post('SetUserInfo', (req, res) =>{
   }
 });
 
-app.post('HealthCodeComplain', (req, res) =>{
+app.post('/HealthCodeComplain', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -214,7 +199,7 @@ app.post('HealthCodeComplain', (req, res) =>{
   }
 });
 
-app.post('AppointVaccinum', (req, res) =>{
+app.post('/AppointVaccinum', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -227,7 +212,7 @@ app.post('AppointVaccinum', (req, res) =>{
   }
 });
 
-app.post('VaccinumAppointRetract', (req, res) =>{
+app.post('/VaccinumAppointRetract', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -240,7 +225,7 @@ app.post('VaccinumAppointRetract', (req, res) =>{
   }
 });
 
-app.post('GetHealthCode', (req, res) =>{
+app.post('/GetHealthCode', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -253,7 +238,7 @@ app.post('GetHealthCode', (req, res) =>{
   }
 });
 
-app.post('SetHealthCode', (req, res) =>{
+app.post('/SetHealthCode', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -266,7 +251,7 @@ app.post('SetHealthCode', (req, res) =>{
   }
 });
 
-app.post('GetUserAll', (req, res) =>{
+app.post('/GetUserAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -279,7 +264,7 @@ app.post('GetUserAll', (req, res) =>{
   }
 });
 
-app.post('SetUser', (req, res) =>{
+app.post('/SetUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -293,7 +278,7 @@ app.post('SetUser', (req, res) =>{
 });
 
 
-app.post('AddUser', (req, res) =>{
+app.post('/AddUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -306,7 +291,7 @@ app.post('AddUser', (req, res) =>{
   }
 });
 
-app.post('DeleteUser', (req, res) =>{
+app.post('/DeleteUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -319,7 +304,7 @@ app.post('DeleteUser', (req, res) =>{
   }
 });
 
-app.post('GetStatisticsData', (req, res) =>{
+app.post('/GetStatisticsData', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -332,7 +317,7 @@ app.post('GetStatisticsData', (req, res) =>{
   }
 });
 
-app.post('GetHealthCodeAll', (req, res) =>{
+app.post('/GetHealthCodeAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -345,7 +330,7 @@ app.post('GetHealthCodeAll', (req, res) =>{
   }
 });
 
-app.post('GetVisitPlacesAll', (req, res) =>{
+app.post('/GetVisitPlacesAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -358,7 +343,7 @@ app.post('GetVisitPlacesAll', (req, res) =>{
   }
 });
 
-app.post('GetVisitPlaces', (req, res) =>{
+app.post('/GetVisitPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -371,7 +356,7 @@ app.post('GetVisitPlaces', (req, res) =>{
   }
 });
 
-app.post('AddVisitPlaces', (req, res) =>{
+app.post('/AddVisitPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -384,7 +369,7 @@ app.post('AddVisitPlaces', (req, res) =>{
   }
 });
 
-app.post('DeleteVisitPlaces', (req, res) =>{
+app.post('/DeleteVisitPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -398,7 +383,7 @@ app.post('DeleteVisitPlaces', (req, res) =>{
 });
 
 
-app.post('GetVaccinationAll', (req, res) =>{
+app.post('/GetVaccinationAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -411,7 +396,7 @@ app.post('GetVaccinationAll', (req, res) =>{
   }
 });
 
-app.post('GetVaccination', (req, res) =>{
+app.post('/GetVaccination', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -424,7 +409,7 @@ app.post('GetVaccination', (req, res) =>{
   }
 });
 
-app.post('AddVaccination', (req, res) =>{
+app.post('/AddVaccination', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -438,7 +423,7 @@ app.post('AddVaccination', (req, res) =>{
 });
 
 
-app.post('DeleteVaccination', (req, res) =>{
+app.post('/DeleteVaccination', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -452,7 +437,7 @@ app.post('DeleteVaccination', (req, res) =>{
 });
 
 
-app.post('GetPlacesAll', (req, res) =>{
+app.post('/GetPlacesAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -466,7 +451,7 @@ app.post('GetPlacesAll', (req, res) =>{
 });
 
 
-app.post('GetPlaces', (req, res) =>{
+app.post('/GetPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -480,7 +465,7 @@ app.post('GetPlaces', (req, res) =>{
 });
 
 
-app.post('AddPlaces', (req, res) =>{
+app.post('/AddPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -494,7 +479,7 @@ app.post('AddPlaces', (req, res) =>{
 });
 
 
-app.post('DeletePlaces', (req, res) =>{
+app.post('/DeletePlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -508,7 +493,7 @@ app.post('DeletePlaces', (req, res) =>{
 });
 
 
-app.post('SetPlaces', (req, res) =>{
+app.post('/SetPlaces', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -522,7 +507,7 @@ app.post('SetPlaces', (req, res) =>{
 });
 
 
-app.post('SetVaccination', (req, res) =>{
+app.post('/SetVaccination', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -536,7 +521,7 @@ app.post('SetVaccination', (req, res) =>{
 });
 
 
-app.post('GetNucleicAll', (req, res) =>{
+app.post('/GetNucleicAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -550,7 +535,7 @@ app.post('GetNucleicAll', (req, res) =>{
 });
 
 
-app.post('GetNucleic', (req, res) =>{
+app.post('/GetNucleic', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -564,7 +549,7 @@ app.post('GetNucleic', (req, res) =>{
 });
 
 
-app.post('SetNucleic', (req, res) =>{
+app.post('/SetNucleic', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -578,7 +563,7 @@ app.post('SetNucleic', (req, res) =>{
 });
 
 
-app.post('AddNucleic', (req, res) =>{
+app.post('/AddNucleic', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -592,7 +577,7 @@ app.post('AddNucleic', (req, res) =>{
 });
 
 
-app.post('DeleteNucleic', (req, res) =>{
+app.post('/DeleteNucleic', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -606,7 +591,7 @@ app.post('DeleteNucleic', (req, res) =>{
 });
 
 
-app.post('GetAdminUserAll', (req, res) =>{
+app.post('/GetAdminUserAll', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -619,7 +604,7 @@ app.post('GetAdminUserAll', (req, res) =>{
   }
 });
 
-app.post('GetAdminUser', (req, res) =>{
+app.post('/GetAdminUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -632,7 +617,7 @@ app.post('GetAdminUser', (req, res) =>{
   }
 });
 
-app.post('SetAdminUser', (req, res) =>{
+app.post('/SetAdminUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -646,7 +631,7 @@ app.post('SetAdminUser', (req, res) =>{
 });
 
 
-app.post('AddAdminUser', (req, res) =>{
+app.post('/AddAdminUser', (req, res) =>{
   let str = '';
   const i = 0;
 
@@ -659,7 +644,7 @@ app.post('AddAdminUser', (req, res) =>{
   }
 });
 
-app.post('DeleteAdminUser', (req, res) =>{
+app.post('/DeleteAdminUser', (req, res) =>{
   let str = '';
   const i = 0;
 
