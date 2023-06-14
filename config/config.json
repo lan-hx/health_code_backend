@@ -1,5 +1,10 @@
 {
-    "uri":"mongodb://host.docker.internal:27017",
-    "connect_port":8080
+    "mongodb_uri":"mongodb://host.docker.internal:27017",
+    "connect_port":8080,
+
+    "Internet_address":"xxx.xxx.xxx.xxx",
+    "bind_address":"xxx.xxx.xxx.xxx",
+
+    "db_name":"mongodb"
 }
 

@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring');
 const {MongoClient, ObjectId} = require("mongodb");
+const Server = require('mongodb').Server;
 const {getDistance} = require('geolib');
 const express = require('express');
 const { connect } = require('http2');
@@ -10,9 +11,10 @@ const app = express();
 const config = require('./config/config.json');
 
 // "uri":"mongodb://host.docker.internal:27017",    
-const uri = config.uri;
+const uri = config.mongodb_uri;
 const client = new MongoClient(uri);
 const database = client.db('mongodbQRCodeDB');
+console.log("successfully connect to mongodbQRCodeDB");
 let POST;
 
 const connect_number = config.connect_port;
@@ -871,19 +873,29 @@ app.listen(connect_number,()=>{ console.log('listening to port:', connect_number
 
 async function LoginUser(POST) {
   try {
-    const userCollection = database.collection('Users');
-    const tokenCollection = database.collection('Tokens');
+    console.log("login user ...");
+
+    var local_client = new MongoClient(uri);
+    var local_database = local_client.db("mongodbQRCodeDB");
+
+    const userCollection = local_database.collection('Users');
+    const tokenCollection = local_database.collection('Tokens');
+
+    console.log("get users and tokens ...");
 
     // Find the user based on name and card ID
     const query = {u_name: POST.name, u_card_id: POST.card_id};
     const user = await userCollection.findOne(query);
-
+    console.log("search done .")
     if (!user) {
       return {
         error: 1,
         message: 'User not found'
       };
     }
+    
+
+    console.log("user found ...");
 
     // Generate a new token
     // const ObjectId = require('mongodb').ObjectId;
