@@ -1,0 +1,10 @@
+{
+    "mongodb_uri":"mongodb://127.0.0.1:27017",
+    "connect_port":8080,
+
+    "Internet_address":"xxx.xxx.xxx.xxx",
+    "bind_address":"xxx.xxx.xxx.xxx",
+
+    "db_name":"mongodb"
+}
+

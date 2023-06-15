@@ -7,7 +7,7 @@ db.createCollection("Users", {
      $jsonSchema: {
         bsonType: "object",
         title: "Users Validation",
-        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone", "health_code" ],
+        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone" ],
         properties: {
             _id: {bsonType: "objectId"},
             u_name: {bsonType: ["null", "string"]},
@@ -15,12 +15,15 @@ db.createCollection("Users", {
             u_email: {bsonType: ["null", "string"]},
             u_phone: {bsonType: ["null", "string"]},
             u_addr: {bsonType: ["null", "string"]},
-            health_code: {bsonType: "int"},
+            health_code: {bsonType: "objectId"},
+            health_state: {enum: ["green", "yellow", "red", "grey"]}
         },
         additionalProperties: false,
       }
   }
 } );
+
+
 
 // // create Admins table
 db.createCollection("Admins",{
@@ -28,11 +31,11 @@ db.createCollection("Admins",{
     $jsonSchema:{
       bsonType:"object",
       title:"Admins Validation",
-      required:["_id", "m_name", "m_card_id", "m_access"],
+      required:["_id", "m_name", "m_password", "m_access"],
       properties:{
         _id: { bsonType: "objectId"},
         m_name: {bsonType: ["null", "string"]},
-        m_card_id: {bsonType: ["null", "string"]},
+        m_password: {bsonType: ["null", "string"]},
         m_access: {bsonType: ["null", "string"]},
       },
       additionalProperties:false,
@@ -46,16 +49,17 @@ db.createCollection("Places",{
       $jsonSchema:{
         bsonType:"object",
         title:"Admins Validation",
-        required:["_id", "p_name", "p_addr", "kind"],
+        required:["_id", "p_name", "p_addr", "p_addr_string", "kind"],
         properties:{
           _id: { bsonType: "objectId"},
           p_name: {bsonType: ["null", "string"]},
+          p_addr_string: {bsonType: ["null", "string"]},
           p_addr:{bsonType:"object", 
                 required: ["latitude", "longitude"],
                 properties:{"latitude":{bsonType:"double"}, "longitude": {bsonType:"double"}}
             },
           kind: {
-            enum: ["hospital", "school", "market", "restaurant", "home", "nucleic", "vaccination", "other"]
+            enum: ["nucleic", "vaccination", "other"]
           },
         },
         additionalProperties:false,
@@ -69,7 +73,7 @@ db.createCollection("Vaccination",{
     $jsonSchema:{
       bsonType:"object",
       title:"Admins Validation",
-      required:["_id", "u_id", "p_id", "kind", "time"],
+      required:["_id", "u_id", "p_id", "kind", "time", "counter"],
 
       properties:{
         _id: { bsonType: "objectId"},
@@ -78,15 +82,15 @@ db.createCollection("Vaccination",{
         
         p_id: {bsonType: "objectId"},
         
-        kind: {
-              enum: ["Corona", "Pfizer", "Beijing"]
-        },
+        counter: {bsonType: "int"},
+
+        kind: {bsonType: "string"},
 
         time: {
           bsonType: "date",
           description: "时间"
         }
-        
+      
       },
       additionalProperties:false,
     }
@@ -99,14 +103,14 @@ db.createCollection("Nucleic", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "u_id", "p_id"],
+      required: ["_id", "u_id", "p_id", "result"],
       properties: {
         _id: {
           bsonType: "objectId",
           description: "核酸检测的id"
         },
         u_id: {
-          bsonType: "string",
+          bsonType: "objectId",
           description: "核酸检测用户的id"
         },
         
@@ -114,15 +118,10 @@ db.createCollection("Nucleic", {
           bsonType: "objectId",  
           description:"核酸检测地点id"
         },
-      
-        kind: {
-          enum: ["positive", "negtive", "absence"],
+        // 0阴  1混阳 2单独阳 3未出结果
+        result: {
+          enum: ["negtive","positive_more", "positive_one", "absence"],
           description: "核酸结果"
-        },
-        
-        u_id: {
-          bsonType: "objectId",
-          description: "用户id"
         },
 
         time: {
@@ -239,5 +238,7 @@ db.createCollection("Tokens",{
     }  
   }
 });
+
+
 
 console.log("Database created successfully");
