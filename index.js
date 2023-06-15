@@ -49,6 +49,19 @@ app.post('/LoginUser', (req, res) =>{
 
 });
 
+app.post('/LoginAdminUser', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = LoginAdminUser(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+
+});
 
 
 app.post('/GetHealthCodeStatus', (req, res) =>{
@@ -928,6 +941,57 @@ async function LoginUser(POST) {
     };
   }
 }
+
+
+async function LoginAdminUser(POST) {
+  try {
+    console.log("login admin user ...");
+
+    var local_client = new MongoClient(uri);
+    var local_database = local_client.db("mongodbQRCodeDB");
+
+    const adminCollection = local_database.collection('Admins');
+    const tokenCollection = local_database.collection('Tokens');
+
+    console.log("get users and tokens ...");
+
+    // Find the user based on name and card ID
+    const query = {u_name: POST.name, u_card_id: POST.password};
+    const admin = await userCollection.findOne(query);
+    console.log("search done .")
+    if (!admin) {
+      return {
+        error: 1,
+        message: 'Admin User not found'
+      };
+    }
+    
+
+    console.log("user found ...");
+
+    // Generate a new token
+    // const ObjectId = require('mongodb').ObjectId;
+    const token = new ObjectId();
+    // Update or insert the token
+    const tokenQuery = {u_id: admin._id};
+    const tokenUpdate = {$set: {token: token.toHexString(), time: new Date()}};
+    const options = {upsert: true};
+    await tokenCollection.updateOne(tokenQuery, tokenUpdate, options);
+
+    return {
+      error: 0,
+      message: 'Login successful',
+      token: token.toHexString(),
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
 
 async function GetHealthCodeStatus(POST) {
   try {

@@ -1,5 +1,5 @@
 {
-    "mongodb_uri":"mongodb://host.docker.internal:27017",
+    "mongodb_uri":"mongodb://127.0.0.1:27017",
     "connect_port":8080,
 
     "Internet_address":"xxx.xxx.xxx.xxx",
