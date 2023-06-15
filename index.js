@@ -1750,9 +1750,8 @@ async function GetVisitPlacesAll(POST) {
     }
 
     const visitPlaceCollection = database.collection('VisitPlace');
-    // const visitPlaces = await visitPlaceCollection.find().toArray();
-    const query = {kind: "other"};
-    const places = await placeCollection.find(query).toArray();
+    const visitPlaces = await visitPlaceCollection.find().toArray();
+
 
     return {
       error: 0,
@@ -1929,6 +1928,8 @@ async function GetPlacesAll(POST) {
     }
 
     const placeCollection = database.collection('Places');
+    const query = {kind: "other"};
+    const places = await placeCollection.find(query).toArray();
     // const places = await placeCollection.find().toArray();
     
 
