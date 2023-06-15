@@ -536,6 +536,125 @@ app.post('/SetPlaces', (req, res) =>{
 });
 
 
+
+app.post('/GetVaccinationPlacesAll', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = GetVaccinationPlacesAll(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+
+app.post('/AddVaccinationPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = AddVaccinationPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+app.post('/DeleteVaccinationPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = DeleteVaccinationPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+app.post('/SetVaccinationPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = SetVaccinationPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+
+app.post('/GetNucleicPlacesAll', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = GetNucleicPlacesAll(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+
+app.post('/AddNucleicPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = AddNucleicPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+app.post('/DeleteNucleicPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = DeleteNucleicPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+app.post('/SetNucleicPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = SetNucleicPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
+
+
+
 app.post('/SetVaccination', (req, res) =>{
   let str = '';
   const i = 0;
@@ -1953,6 +2072,324 @@ async function SetPlaces(POST) {
     };
   }
 }
+
+
+async function GetVaccinationPlacesAll(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    const places = await placeCollection.find().toArray();
+
+    
+    const ret_places = places.map((item)=>{
+      return {
+        place_id: item._id,
+        place_name: item.p_name,
+        place_addr: item.p_addr,
+        place_addr_string: item.p_addr_string
+      }
+    })
+
+    return {
+      error: 0,
+      message: 'Places retrieved successfully',
+      result: ret_places
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
+async function AddVaccinationPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+
+    const place = {
+      _id: new ObjectId(),
+      p_name: POST.place_name,
+      p_addr_string: POST.place_addr_string,
+      kind: "vaccination",
+      p_addr: {
+        latitude: parseFloat(POST.place_addr.latitude),
+        longitude: parseFloat(POST.place_addr.longitude)
+      }
+    };
+
+    const result = await placeCollection.insertOne(place);
+
+    return {
+      error: 0,
+      message: 'Place added successfully',
+      place_id: place._id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+async function DeleteVaccinationPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.place_id)};
+
+    const result = await placeCollection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      return {
+        error: 1,
+        message: 'Place not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Place deleted successfully',
+      place_id: POST.place_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+async function SetVaccinationPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.place_id)};
+
+    const updateFields = {};
+    updateFields.p_name = POST.place_name;
+    updateFields.kind = "vaccination";
+    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr = {
+      latitude: parseFloat(POST.latitude),
+      longitude: parseFloat(POST.longitude)
+    };
+
+    const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
+
+    if (updateResult.modifiedCount === 0) {
+      return {
+        error: 1,
+        message: 'Place not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Place updated successfully',
+      place_id: POST.place_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
+
+async function GetNucleicPlacesAll(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    const places = await placeCollection.find().toArray();
+
+    
+    const ret_places = places.map((item)=>{
+      return {
+        place_id: item._id,
+        place_name: item.p_name,
+        place_addr: item.p_addr,
+        place_addr_string: item.p_addr_string
+      }
+    })
+
+    return {
+      error: 0,
+      message: 'Places retrieved successfully',
+      result: ret_places
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
+async function AddNucleicPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+
+    const place = {
+      _id: new ObjectId(),
+      p_name: POST.place_name,
+      p_addr_string: POST.place_addr_string,
+      kind: "nucleic",
+      p_addr: {
+        latitude: parseFloat(POST.place_addr.latitude),
+        longitude: parseFloat(POST.place_addr.longitude)
+      }
+    };
+
+    const result = await placeCollection.insertOne(place);
+
+    return {
+      error: 0,
+      message: 'Place added successfully',
+      place_id: place._id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+async function DeleteNucleicPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.place_id)};
+
+    const result = await placeCollection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      return {
+        error: 1,
+        message: 'Place not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Place deleted successfully',
+      place_id: POST.place_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+async function SetNucleicPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const placeCollection = database.collection('Places');
+    // const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.place_id)};
+
+    const updateFields = {};
+    updateFields.p_name = POST.place_name;
+    updateFields.kind = "nucleic";
+    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr = {
+      latitude: parseFloat(POST.latitude),
+      longitude: parseFloat(POST.longitude)
+    };
+
+    const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
+
+    if (updateResult.modifiedCount === 0) {
+      return {
+        error: 1,
+        message: 'Place not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Place updated successfully',
+      place_id: POST.place_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
 
 
 async function GetVaccinationAll(POST) {
