@@ -1850,7 +1850,7 @@ async function AddPlaces(POST) {
     const place = {
       _id: new ObjectId(),
       p_name: POST.place_name,
-      p_addr_string: POST.p_addr_string,
+      p_addr_string: POST.place_addr_string,
       kind: "other",
       p_addr: {
         latitude: parseFloat(POST.latitude),
