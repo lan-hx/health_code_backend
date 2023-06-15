@@ -1346,7 +1346,7 @@ async function GetUserAll(POST) {
     return {
       error: 0,
       message: 'Users retrieved successfully',
-      ret_users
+      users: ret_users
     };
   } catch (err) {
     return {
@@ -1374,6 +1374,7 @@ async function SetUser(POST) {
         u_name: POST.name,
         u_card_id: POST.card_id,
         u_phone: POST.phone,
+        u_addr: POST.address,
         u_email: POST.email
       }
     };
@@ -1403,13 +1404,13 @@ async function SetUser(POST) {
 async function AddUser(POST) {
   try {
 
-    // const isValidToken = await verifyToken(POST.token);
-    // if (!isValidToken) {
-    //   return {
-    //     error: 1,
-    //     message: 'Invalid token'
-    //   };
-    // }
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
 
     const userCollection = database.collection('Users');
 
@@ -1422,6 +1423,7 @@ async function AddUser(POST) {
       u_card_id: POST.card_id,
       u_phone: POST.phone,
       u_email: POST.email,
+      u_addr: POST.address,
       health_code: new ObjectId(),
       health_state:"green"
     };
@@ -1432,7 +1434,7 @@ async function AddUser(POST) {
     return {
       error: 0,
       message: 'User added successfully',
-      insertedId: result.insertedId
+      user_id: user._id
     };
   } catch (err) {
     return {
@@ -1498,7 +1500,7 @@ async function GetStatisticsData(POST) {
     return {
       error: 0,
       message: 'Statistics data retrieved successfully',
-      statisticsData
+      health_code_statistics: statisticsData
     };
   } catch (err) {
     return {
