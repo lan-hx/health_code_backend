@@ -31,6 +31,7 @@ const result = {
 }
 
 const state_map = ['green', 'yellow', 'red', 'grey'];
+const state_map_chinese = ['绿码', '黄码', '红码', '灰码'];
 const state_rev_map = {
   'green': 0,
   'yellow': 1,
@@ -1660,9 +1661,14 @@ async function GetStatisticsData(POST) {
     const userCollection = database.collection('Users');
 
     const statisticsData = await userCollection.aggregate([
-      {$group: {_id: "$health_code", num: {$sum: 1}}},
-      {$project: {health_code: "$_id", num: 1, _id: 0}}
-    ]).toArray();
+      {$group: {_id:"$health_code", value: {$sum: 1}}},
+      {$project: {type: '$_id', value: '$value', _id:0}}
+    ]).toArray().map(item=>{
+      return {
+        type: state_map_chinese[item.type],
+        value: item.value
+      }
+    });
 
     return {
       error: 0,
@@ -2707,7 +2713,7 @@ async function GetVaccinationAll(POST) {
     })
     return {
       error: 0,
-      message: 'Nucleic records retrieved successfully',
+      message: 'Vaccination records retrieved successfully',
       result: ret_vaccination
     };
   } catch (err) {
@@ -2719,7 +2725,7 @@ async function GetVaccinationAll(POST) {
 }
 
 
-async function AddNucleic(POST) {
+async function AddVaccination(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -2753,7 +2759,7 @@ async function AddNucleic(POST) {
 
     return {
       error: 0,
-      message: 'Nucleic record added successfully',
+      message: 'Vaccination record added successfully',
       nucleic_id: nucleicRecord._id
     };
   } catch (err) {
@@ -2764,7 +2770,7 @@ async function AddNucleic(POST) {
   }
 }
 
-async function SetNucleic(POST) {
+async function SetVaccination(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -2798,13 +2804,13 @@ async function SetNucleic(POST) {
     if (result.matchedCount === 0) {
       return {
         error: 1,
-        message: 'Nucleic record not found'
+        message: 'Vaccination record not found'
       };
     }
 
     return {
       error: 0,
-      message: 'Nucleic record updated successfully',
+      message: 'Vaccination record updated successfully',
       nucleic_id: POST.nucleic_id
     };
   } catch (err) {
@@ -2816,7 +2822,7 @@ async function SetNucleic(POST) {
 }
 
 
-async function DeleteNucleic(POST) {
+async function DeleteVaccination(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -2835,13 +2841,13 @@ async function DeleteNucleic(POST) {
     if (result.deletedCount === 0) {
       return {
         error: 1,
-        message: 'Nucleic record not found'
+        message: 'Vaccination record not found'
       };
     }
 
     return {
       error: 0,
-      message: 'Nucleic record deleted successfully',
+      message: 'Vaccination record deleted successfully',
       nucleic_id: POST.nucleic_id
     };
   } catch (err) {
