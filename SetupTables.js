@@ -49,16 +49,17 @@ db.createCollection("Places",{
       $jsonSchema:{
         bsonType:"object",
         title:"Admins Validation",
-        required:["_id", "p_name", "p_addr", "kind"],
+        required:["_id", "p_name", "p_addr", "p_addr_string", "kind"],
         properties:{
           _id: { bsonType: "objectId"},
           p_name: {bsonType: ["null", "string"]},
+          p_addr_string: {bsonType: ["null", "string"]},
           p_addr:{bsonType:"object", 
                 required: ["latitude", "longitude"],
                 properties:{"latitude":{bsonType:"double"}, "longitude": {bsonType:"double"}}
             },
           kind: {
-            enum: ["hospital", "school", "market", "restaurant", "home", "nucleic", "vaccination", "other"]
+            enum: ["nucleic", "vaccination", "other"]
           },
         },
         additionalProperties:false,

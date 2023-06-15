@@ -30,6 +30,14 @@ const result = {
   ]
 }
 
+const state_map = ['green', 'yellow', 'red', 'grey'];
+const state_rev_map = {
+  'green': 0,
+  'yellow': 1,
+  'red': 2,
+  'grey': 3,
+}
+
 const buffers = [];
 
 app.use(bodyParser.json());
@@ -836,7 +844,7 @@ async function GetHealthCodeStatus(POST) {
       return {
         error: 0,
         status: ret,
-        health_code_string: userInfo.health_code,
+        health_code_string: userInfo.health_code + Math.floor(Math.random()*10000),
         card_id: userInfo.u_card_id,
         latest_test: {
           // test_time: nucleicInfo.time,
@@ -1185,7 +1193,7 @@ async function ScanLocationCode() {
     }
 
     const placeCollection = await database.collection('Places');
-    const placeInfo = await placeCollection.findOne({p_id: POST.location_id});
+    const placeInfo = await placeCollection.findOne({p_id: POST.place_code_string});
     if (!placeInfo) {
       return {
         error: 1,
@@ -1197,13 +1205,16 @@ async function ScanLocationCode() {
     CurrentTime = new Date();
     visitPlaceCollection.insertOne({
       _id: new ObjectId(),
-      p_id: POST.location_id,
+      p_id: POST.place_code_string,
       u_id: userInfo._id,
       time: CurrentTime
     });
 
     return {
       error: 0,
+      place_name: placeInfo.p_name,
+      status: state_rev_map[userInfo.health_state],
+      health_code_string: userInfo.u_id + placeInfo.p_id + Math.floor(Math.random()*10000)
     }
   } catch (err) {
     return {
@@ -1339,7 +1350,19 @@ async function GetUserAll(POST) {
 
     const userCollection = database.collection('Users');
     const users = await userCollection.find({}).toArray();
+    
     const ret_users = users.map((item)=>{
+
+      ret = 0
+      if(item.health_state == "green"){
+        ret = 0;
+      }else if(item.health_state == "red"){
+        ret = 1;
+      }else if(item.health_state == "yellow"){
+        ret = 2;
+      }else{
+        ret = 3;
+      }
       return {
         user_id: item._id,
         name: item.u_name,
@@ -1347,7 +1370,8 @@ async function GetUserAll(POST) {
         card_id: item.u_card_id,
         address: item.u_addr,
         email: item.u_email,
-        health_code_status: item.health_status
+        health_code_status: ret,
+        health_code_string: item.health_state
       }
     })
 
@@ -1377,6 +1401,8 @@ async function SetUser(POST) {
     const userCollection = database.collection('Users');
     // const ObjectId = require('mongodb').ObjectId;
     const query = {_id: new ObjectId(POST.user_id)};
+    state = 'ad'
+
     const update = {
       $set: {
         u_name: POST.name,
@@ -1384,7 +1410,7 @@ async function SetUser(POST) {
         u_phone: POST.phone,
         u_addr: POST.address,
         u_email: POST.email,
-        health_state: POST.health_code_status
+        health_state: state_map[POST.health_code_status]
       }
     };
 
@@ -1784,10 +1810,20 @@ async function GetPlacesAll(POST) {
     const placeCollection = database.collection('Places');
     const places = await placeCollection.find().toArray();
 
+    
+    const ret_places = places.map((item)=>{
+      return {
+        place_id: item._id,
+        place_name: item.p_name,
+        place_addr: item.p_addr,
+        place_addr_string: item.p_addr_string
+      }
+    })
+
     return {
       error: 0,
       message: 'Places retrieved successfully',
-      places: places
+      result: ret_places
     };
   } catch (err) {
     return {
@@ -1797,10 +1833,6 @@ async function GetPlacesAll(POST) {
   }
 }
 
-async function GetPlaces() {
-  await 1;
-  return 1;
-}
 
 async function AddPlaces(POST) {
   try {
@@ -1818,7 +1850,8 @@ async function AddPlaces(POST) {
     const place = {
       _id: new ObjectId(),
       p_name: POST.place_name,
-      kind: POST.kind,
+      p_addr_string: POST.p_addr_string,
+      kind: "other",
       p_addr: {
         latitude: parseFloat(POST.latitude),
         longitude: parseFloat(POST.longitude)
@@ -1891,18 +1924,13 @@ async function SetPlaces(POST) {
     const query = {_id: new ObjectId(POST.place_id)};
 
     const updateFields = {};
-    if (POST.place_name) {
-      updateFields.p_name = POST.place_name;
-    }
-    if (POST.kind) {
-      updateFields.kind = POST.kind;
-    }
-    if (POST.place_addr) {
-      updateFields.p_addr = {
-        latitude: parseFloat(POST.latitude),
-        longitude: parseFloat(POST.longitude)
-      };
-    }
+    updateFields.p_name = POST.place_name;
+    updateFields.kind = "other";
+    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr = {
+      latitude: parseFloat(POST.latitude),
+      longitude: parseFloat(POST.longitude)
+    };
 
     const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
 
