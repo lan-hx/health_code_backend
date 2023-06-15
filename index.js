@@ -38,6 +38,14 @@ const state_rev_map = {
   'grey': 3,
 }
 
+const nucleic_map = ["negtive","positive_more", "positive_one", "absence"];
+const nucleic_rev_map = {
+  "negtive":0 ,
+  "positive_more":1,
+  "positive_one":2,
+  "absence":3,
+}
+
 const buffers = [];
 
 app.use(bodyParser.json());
@@ -1857,11 +1865,20 @@ async function GetNucleicAll(POST) {
 
     const nucleicCollection = database.collection('Nucleic');
     const nucleicRecords = await nucleicCollection.find().toArray();
-
+    
+    const ret_nucleics = nucleicRecords.map((item)=>{
+      return {
+        nucleic_id: item._id,
+        user_id: item.u_id,
+        place_id: item.p_id,
+        datetime: item.time.getTime(),
+        result: nucleic_rev_map[item.result]
+      }
+    })
     return {
       error: 0,
       message: 'Nucleic records retrieved successfully',
-      nucleic_records: nucleicRecords
+      result: ret_nucleics
     };
   } catch (err) {
     return {
@@ -1871,11 +1888,6 @@ async function GetNucleicAll(POST) {
   }
 }
 
-
-async function GetVaccination() {
-  await 1;
-  return 1;
-}
 
 async function AddNucleic(POST) {
   try {
@@ -1894,7 +1906,8 @@ async function AddNucleic(POST) {
       _id: new ObjectId(),
       p_id: new ObjectId(POST.place_id),
       u_id: new ObjectId(POST.user_id),
-      kind: POST.kind
+      result: nucleic_map[POST.result],
+      time: new Date(POST.datetime)
     };
 
     const result = await nucleicCollection.insertOne(nucleicRecord);
@@ -1912,10 +1925,88 @@ async function AddNucleic(POST) {
   }
 }
 
-async function DeleteVaccination() {
-  await 1;
-  return 1;
+async function SetNucleic(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const nucleicCollection = database.collection('Nucleic');
+    const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.nucleic_id)};
+
+    const updateData = {
+      $set: {
+        p_id: new ObjectId(POST.p_id),
+        u_id: new ObjectId(POST.u_id),
+        result: nucleic_map[POST.result],
+        time: new Date(POST.datetime)
+      }
+    };
+
+    const result = await nucleicCollection.updateOne(query, updateData);
+
+    if (result.matchedCount === 0) {
+      return {
+        error: 1,
+        message: 'Nucleic record not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Nucleic record updated successfully',
+      nucleic_id: POST.nucleic_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
 }
+
+
+async function DeleteNucleic(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const nucleicCollection = database.collection('Nucleic');
+    const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.nucleic_id)};
+
+    const result = await nucleicCollection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      return {
+        error: 1,
+        message: 'Nucleic record not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Nucleic record deleted successfully',
+      nucleic_id: POST.nucleic_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
 
 async function GetPlacesAll(POST) {
   try {
@@ -2220,7 +2311,7 @@ async function SetVaccinationPlaces(POST) {
     if (updateResult.modifiedCount === 0) {
       return {
         error: 1,
-        message: 'Place not found'
+        message: 'Place update failed'
       };
     }
 
@@ -2380,7 +2471,7 @@ async function SetNucleicPlaces(POST) {
     if (updateResult.modifiedCount === 0) {
       return {
         error: 1,
-        message: 'Place not found'
+        message: 'Place update fail'
       };
     }
 
@@ -2593,163 +2684,6 @@ async function SetVaccination(POST) {
   }
 }
 
-// async function GetNucleicAll(POST) {
-//   try {
-//     const isValidToken = await verifyToken(POST.token);
-//     if (!isValidToken) {
-//       return {
-//         error: 1,
-//         message: 'Invalid token'
-//       };
-//     }
-
-//     const nucleicCollection = database.collection('Nucleic');
-//     const nucleicRecords = await nucleicCollection.find().toArray();
-
-//     return {
-//       error: 0,
-//       message: 'Nucleic records retrieved successfully',
-//       nucleic_records: nucleicRecords
-//     };
-//   } catch (err) {
-//     return {
-//       error: 1,
-//       message: err.message
-//     };
-//   }
-// }
-
-async function GetNucleicAll(POST) {
-  try {
-    const isValidToken = await verifyToken(POST.token);
-    if (!isValidToken) {
-      return {
-        error: 1,
-        message: 'Invalid token'
-      };
-    }
-
-    const nucleicCollection = database.collection('Nucleic');
-    const nucleicRecords = await nucleicCollection.find().toArray();
-
-    const placeCollection = database.collection('Places');
-    const userCollection = database.collection('Users');
-
-    const nucleicRecordsWithInfo = await Promise.all(nucleicRecords.map(async (record) => {
-      const place = await placeCollection.findOne({_id: record.p_id});
-      const user = await userCollection.findOne({_id: record.u_id});
-
-      return {
-        _id: record._id,
-        p_id: record.p_id,
-        place_name: place ? place.p_name : null,
-        u_id: record.u_id,
-        user_name: user ? user.user_name : null,
-        user_card_id: user ? user.user_card_id : null
-      };
-    }));
-
-    return {
-      error: 0,
-      message: 'Nucleic records retrieved successfully',
-      nucleic_records: nucleicRecordsWithInfo
-    };
-  } catch (err) {
-    return {
-      error: 1,
-      message: err.message
-    };
-  }
-}
-
-
-async function GetNucleic() {
-  await 1;
-  return 1;
-}
-
-
-async function SetNucleic(POST) {
-  try {
-    const isValidToken = await verifyToken(POST.token);
-    if (!isValidToken) {
-      return {
-        error: 1,
-        message: 'Invalid token'
-      };
-    }
-
-    const nucleicCollection = database.collection('Nucleic');
-    const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.nucleic_id)};
-
-    const updateData = {
-      $set: {
-        p_id: new ObjectId(POST.p_id),
-        u_id: new ObjectId(POST.u_id),
-        kind: POST.kind,
-        time: new Date()
-      }
-    };
-
-    const result = await nucleicCollection.updateOne(query, updateData);
-
-    if (result.matchedCount === 0) {
-      return {
-        error: 1,
-        message: 'Nucleic record not found'
-      };
-    }
-
-    return {
-      error: 0,
-      message: 'Nucleic record updated successfully',
-      nucleic_id: POST.nucleic_id
-    };
-  } catch (err) {
-    return {
-      error: 1,
-      message: err.message
-    };
-  }
-}
-
-
-async function DeleteNucleic(POST) {
-  try {
-    const isValidToken = await verifyToken(POST.token);
-    if (!isValidToken) {
-      return {
-        error: 1,
-        message: 'Invalid token'
-      };
-    }
-
-    const nucleicCollection = database.collection('Nucleic');
-    const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.nucleic_id)};
-
-    const result = await nucleicCollection.deleteOne(query);
-
-    if (result.deletedCount === 0) {
-      return {
-        error: 1,
-        message: 'Nucleic record not found'
-      };
-    }
-
-    return {
-      error: 0,
-      message: 'Nucleic record deleted successfully',
-      nucleic_id: POST.nucleic_id
-    };
-  } catch (err) {
-    return {
-      error: 1,
-      message: err.message
-    };
-  }
-}
 
 
 async function GetAdminUserAll(POST) {

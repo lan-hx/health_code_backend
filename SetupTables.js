@@ -103,7 +103,7 @@ db.createCollection("Nucleic", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "u_id", "p_id"],
+      required: ["_id", "u_id", "p_id", "result"],
       properties: {
         _id: {
           bsonType: "objectId",
@@ -118,15 +118,10 @@ db.createCollection("Nucleic", {
           bsonType: "objectId",  
           description:"核酸检测地点id"
         },
-      
-        kind: {
-          enum: ["positive", "negtive", "absence"],
+        // 0阴  1混阳 2单独阳 3未出结果
+        result: {
+          enum: ["negtive","positive_more", "positive_one", "absence"],
           description: "核酸结果"
-        },
-        
-        u_id: {
-          bsonType: "objectId",
-          description: "用户id"
         },
 
         time: {
