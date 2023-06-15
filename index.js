@@ -1750,7 +1750,9 @@ async function GetVisitPlacesAll(POST) {
     }
 
     const visitPlaceCollection = database.collection('VisitPlace');
-    const visitPlaces = await visitPlaceCollection.find().toArray();
+    // const visitPlaces = await visitPlaceCollection.find().toArray();
+    const query = {kind: "other"};
+    const places = await placeCollection.find(query).toArray();
 
     return {
       error: 0,
@@ -1927,7 +1929,8 @@ async function GetPlacesAll(POST) {
     }
 
     const placeCollection = database.collection('Places');
-    const places = await placeCollection.find().toArray();
+    // const places = await placeCollection.find().toArray();
+    
 
     
     const ret_places = places.map((item)=>{
@@ -2085,7 +2088,9 @@ async function GetVaccinationPlacesAll(POST) {
     }
 
     const placeCollection = database.collection('Places');
-    const places = await placeCollection.find().toArray();
+    const query = {kind: "vaccination"};
+    const places = await placeCollection.find(query).toArray();
+    // const places = await placeCollection.find().toArray();
 
     
     const ret_places = places.map((item)=>{
@@ -2244,7 +2249,8 @@ async function GetNucleicPlacesAll(POST) {
     }
 
     const placeCollection = database.collection('Places');
-    const places = await placeCollection.find().toArray();
+    const query = {kind: "nucleic"};
+    const places = await placeCollection.find(query).toArray();
 
     
     const ret_places = places.map((item)=>{
