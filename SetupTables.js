@@ -243,21 +243,6 @@ db.createCollection("Tokens",{
   }
 });
 
-// create Tokens table
-db.createCollection("M_Tokens",{
-  validator:{
-    $jsonSchema:{
-      bsonType:"object",
-      title:"Tokens Validation",
-      required:["_id", "m_id", "time"],
-      properties:{
-        _id: { bsonType: "objectId"},
-        u_id: {bsonType: "objectId"},
-        time:{bsonType:"date"}
-      },
-    }  
-  }
-});
 
 
 console.log("Database created successfully");

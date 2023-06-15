@@ -12,7 +12,7 @@ db.getCollection('Users').insertMany([
 
 // insert some administors into the table
 db.getCollection('Admins').insertMany([
-    {"_id":new ObjectId(cnt++), "m_name":"aa", "m_password":"123456789012345678","m_access":"ROOT"},
-    {"_id":new ObjectId(cnt++), "m_name":"bb", "m_password":"123456789012345679","m_access":"SUPER"},
+    {"_id":new ObjectId(cnt++), "m_name":"test", "m_password":"1","m_access":"ROOT"},
+    {"_id":new ObjectId(cnt++), "m_name":"bb", "m_password":"1","m_access":"SUPER"},
 ]);
 
