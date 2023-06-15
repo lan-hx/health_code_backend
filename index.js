@@ -681,215 +681,6 @@ app.post('/DeleteAdminUser', (req, res) =>{
 app.listen(connect_number,()=>{ console.log('listening to port:', connect_number)});
 
 
-
-// async function get_data(POST) {
-//   switch (POST.apiname) {
-//     case 'LoginUser':
-//       let RET = await LoginUser(POST);
-//       return RET;
-//       break;
-//     case 'GetHealthCodeStatus':
-//       RET = await GetHealthCodeStatus(POST);
-//       return RET;
-//       break;
-//     case 'GetUserInfo':
-//       RET = await GetUserInfo(POST);
-//       return RET;
-//       break;
-//     case 'GetTests':
-//       RET = await GetTests(POST);
-//       return RET;
-//       break;
-//     case 'GetNotifications':
-//       RET = await GetNotifications(POST);
-//       return RET;
-//       break;
-//     case 'GetTestStationList':
-//       RET = await GetTestStationList(POST);
-//       return RET;
-//       break;
-//     case 'GetHealthCodeComplainList':
-//       RET = await GetHealthCodeComplainList(POST);
-//       return RET;
-//       break;
-//     case 'GetVaccinumList':
-//       RET = await GetVaccinumList(POST);
-//       return RET;
-//     case 'GetVaccinumAppointmentAddress':
-//       RET = await GetVaccinumAppointmentAddress(POST);
-//       return RET;
-//       break;
-//     case 'GetVaccinumAppointmentState':
-//       RET = await GetVaccinumAppointmentState(POST);
-//       return RET;
-//       break;
-//     case 'ScanLocationCode':
-//       RET = await ScanLocationCode(POST);
-//       break;
-//     case 'SetUserInfo':
-//       RET = await SetUserInfo(POST);
-//       return RET;
-//       break;
-//     case 'HealthCodeComplain':
-//       RET = await HealthCodeComplain(POST);
-//       return RET;
-//       break;
-//     case 'AppointVaccinum':
-//       RET = await AppointVaccinum(POST);
-//       return RET;
-//       break;
-//     case 'VaccinumAppointRetract':
-//       RET = await VaccinumAppointRetract(POST);
-//       return RET;
-//       break;
-//     case 'GetHealthCode':
-//       RET = await GetHealthCode(POST);
-//       return RET;
-//       break;
-//     case 'SetHealthCode':
-//       RET = await SetHealthCode(POST);
-//       return RET;
-//       break;
-//     case 'GetUserAll':
-//       RET = await GetUserAll(POST);
-//       return RET;
-//       break;
-//     case 'SetUser':
-//       RET = await SetUser(POST);
-//       return RET;
-//       break;
-//     case 'AddUser':
-//       RET = await AddUser(POST);
-//       return RET;
-//       break;
-//     case 'DeleteUser':
-//       RET = await DeleteUser(POST);
-//       return RET;
-//       break;
-//     case 'GetStatisticsData':
-//       RET = GetStatisticsData(POST);
-//       return RET;
-//       break;
-//     case 'GetHealthCodeAll':
-//       RET = await GetHealthCodeAll(POST);
-//       return RET;
-//       break;
-//     case 'GetVisitPlacesAll':
-//       RET = await GetVisitPlacesAll(POST);
-//       return RET;
-//       break;
-//     case 'GetVisitPlaces':
-//       RET = await GetVisitPlaces(POST);
-//       return RET;
-//       break;
-//     case 'AddVisitPlaces':
-//       RET = await AddVisitPlaces(POST);
-//       return RET;
-//       break;
-//     case 'DeleteVisitPlaces':
-//       RET = await DeleteVisitPlaces(POST);
-//       return RET;
-//       break;
-//     case 'GetVaccinationAll':
-//       RET = await GetVaccinationAll(POST);
-//       return RET;
-//       break;
-//     case 'GetVaccination':
-//       RET = await GetVaccination(POST);
-//       return RET;
-//       break;
-//     case 'AddVaccination':
-//       RET = await AddVaccination(POST);
-//       return RET;
-//       break;
-//     case 'DeleteVaccination':
-//       RET = await DeleteVaccination(POST);
-//       return RET;
-//       break;
-//     case 'GetPlacesAll':
-//       RET = await GetPlacesAll(POST);
-//       return RET;
-//       break;
-//     case 'GetPlaces':
-//       RET = await GetPlaces(POST);
-//       return RET;
-//       break;
-//     case 'AddPlaces':
-//       RET = await AddPlaces(POST);
-//       return RET;
-//       break;
-//     case 'DeletePlaces':
-//       RET = await DeletePlaces(POST);
-//       return RET;
-//       break;
-//     case 'SetPlaces':
-//       RET = await SetPlaces(POST);
-//       return RET;
-//     case 'GetVaccinationAll':
-//       RET = await GetVaccinationAll(POST);
-//       return RET;
-//       break;
-//     case 'GetVaccination':
-//       RET = await GetVaccination(POST);
-//       return RET;
-//       break;
-//     case 'AddVaccination':
-//       RET = await AddVaccination(POST);
-//       return RET;
-//       break;
-//     case 'SetVaccination':
-//       RET = await SetVaccination(POST);
-//       return RET;
-//       break;
-//     case 'DeleteVaccination':
-//       RET = await DeleteVaccination(POST);
-//       return RET;
-//       break;
-//     case 'GetNucleicAll':
-//       RET = await GetNucleicAll(POST);
-//       return RET;
-//       break;
-//     case 'GetNucleic':
-//       RET = await GetNucleic(POST);
-//       return RET;
-//       break;
-//     case 'SetNucleic':
-//       RET = await SetNucleic(POST);
-//       return RET;
-//       break;
-//     case 'AddNucleic':
-//       RET = await AddNucleic(POST);
-//       return RET;
-//       break;
-//     case 'DeleteNucleic':
-//       RET = await DeleteNucleic(POST);
-//       return RET;
-//       break;
-//     case 'GetAdminUserAll':
-//       RET = await GetAdminUserAll(POST);
-//       return RET;
-//       break;
-//     case 'GetAdminUser':
-//       RET = await GetAdminUser(POST);
-//       return RET;
-//       break;
-//     case 'SetAdminUser':
-//       RET = await SetAdminUser(POST);
-//       return RET;
-//       break;
-//     case 'AddAdminUser':
-//       RET = await AddAdminUser(POST);
-//       return RET;
-//       break;
-//     case 'DeleteAdminUser':
-//       RET = await DeleteAdminUser(POST);
-//       return RET;
-//       break;
-//     default:
-//       console.log(`Sorry, we are out of ${expr}.`);
-//   }
-// }
-
 async function LoginUser(POST) {
   try {
     console.log("login user ...");
@@ -956,8 +747,8 @@ async function LoginAdminUser(POST) {
     console.log("get users and tokens ...");
 
     // Find the user based on name and card ID
-    const query = {u_name: POST.name, u_card_id: POST.password};
-    const admin = await userCollection.findOne(query);
+    const query = {m_name: POST.name, m_card_id: POST.password};
+    const admin = await adminCollection.findOne(query);
     console.log("search done .")
     if (!admin) {
       return {
@@ -1026,16 +817,30 @@ async function GetHealthCodeStatus(POST) {
     const nucleicCollection = database.collection('Nucleic');
     const nuclequery = {u_id: userInfo._id}
     const nucleicInfo = await nucleicCollection.findOne(nuclequery);
-
+    ret = 0
+    if(userInfo.health_state == "green"){
+      ret = 0;
+    }else if(userInfo.health_state == "red"){
+      ret = 1;
+    }else {
+      ret = 2;
+    }
     if (!nucleicInfo) {
       return {
-        error: 1,
-        message: 'Nucleic not found'
+        error: 0,
+        status: ret,
+        health_code_string: userInfo.health_code,
+        card_id: userInfo.u_card_id,
+        latest_test: {
+          // test_time: nucleicInfo.time,
+          // test_result: nucleicInfo.kind
+        }
       };
     } else {
       return {
         error: 0,
-        health_code_status: userInfo.health_code,
+        status: ret,
+        health_code_string: userInfo.health_code,
         card_id: userInfo.u_card_id,
         latest_test: {
           test_time: nucleicInfo.time,
@@ -1416,7 +1221,7 @@ async function SetUserInfo(POST) {
     // const tokeninfo = tokenCollection.findOne({_id:ObjectId(POST.token)});
     const query = {token: POST.token};
     const tokeninfo = await tokenCollection.findOne(query);
-    const userInfo = await userCollection.findOne({_id: tokeninfo.u_id});
+    const userInfo = await userCollection.findOne({_id: POST.user_id});
     if (!userInfo) {
       return {
         error: 1,
@@ -1527,11 +1332,21 @@ async function GetUserAll(POST) {
 
     const userCollection = database.collection('Users');
     const users = await userCollection.find({}).toArray();
+    const ret_users = users.map((item)=>{
+      return {
+        user_id: item._id,
+        name: item.u_name,
+        phone: item.u_phone,
+        card_id: item.u_card_id,
+        address: item.u_addr,
+        email: item.u_email,
+      }
+    })
 
     return {
       error: 0,
       message: 'Users retrieved successfully',
-      users
+      ret_users
     };
   } catch (err) {
     return {
@@ -2596,6 +2411,24 @@ async function DeleteAdminUser(POST) {
 async function verifyToken(token) {
   try {
     const tokenCollection = database.collection('Tokens');
+    const query = {token};
+
+    const tokenDoc = await tokenCollection.findOne(query);
+    if (tokenDoc) {
+      return true; // Token found in the collection
+    } else {
+      return false; // Token not found in the collection
+    }
+  } catch (err) {
+    console.error('Error verifying token:', err);
+    return false; // Return false in case of an error
+  }
+}
+
+
+async function verifyMToken(token) {
+  try {
+    const tokenCollection = database.collection('M_Tokens');
     const query = {token};
 
     const tokenDoc = await tokenCollection.findOne(query);
