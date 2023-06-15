@@ -736,7 +736,7 @@ async function LoginUser(POST) {
 
 async function LoginAdminUser(POST) {
   try {
-    console.log("login admin user ...");
+    // console.log("login admin user ...");
 
     var local_client = new MongoClient(uri);
     var local_database = local_client.db("mongodbQRCodeDB");
@@ -747,9 +747,8 @@ async function LoginAdminUser(POST) {
     console.log("get users and tokens ...");
 
     // Find the user based on name and card ID
-    const query = {m_name: POST.name, m_card_id: POST.password};
+    const query = {m_name: POST.name};
     const admin = await adminCollection.findOne(query);
-    console.log("search done .")
     if (!admin) {
       return {
         error: 1,
@@ -757,6 +756,12 @@ async function LoginAdminUser(POST) {
       };
     }
     
+    if( admin.m_password != POST.password){
+      return {
+        error: 1,
+        message: 'Wrong Password'
+      };
+    }
 
     console.log("user found ...");
 
@@ -2284,10 +2289,20 @@ async function GetAdminUserAll(POST) {
     const adminCollection = database.collection('Admins');
     const adminUsers = await adminCollection.find().toArray();
 
+
+    const ret_adminusers = adminUsers.map((item)=>{
+      return {
+        admin_user_id: item._id,
+        admin_user_name: item.m_name,
+        admin_user_phone: item.m_access,
+        admin_user_access: item.m_password
+      }
+    })
+
     return {
       error: 0,
       message: 'Admin users retrieved successfully',
-      adminUsers
+      result: ret_adminusers
     };
   } catch (err) {
     return {
@@ -2312,7 +2327,7 @@ async function SetAdminUser(POST) {
     const query = {_id: new ObjectId(POST.admin_user_id)};
     const update = {
       $set: {
-        m_card_id: POST.admin_card_id,
+        m_password: POST.admin_user_password,
         m_name: POST.admin_user_name,
         m_access: POST.admin_user_access
       }
@@ -2356,7 +2371,7 @@ async function AddAdminUser(POST) {
     const admin = {
       _id: new ObjectId(),
       m_name: POST.admin_user_name,
-      m_card_id: POST.m_card_id,
+      m_password: POST.admin_user_password,
       m_access: POST.admin_user_access
     };
     const result = await adminCollection.insertOne(admin);

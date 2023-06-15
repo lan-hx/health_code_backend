@@ -31,11 +31,11 @@ db.createCollection("Admins",{
     $jsonSchema:{
       bsonType:"object",
       title:"Admins Validation",
-      required:["_id", "m_name", "m_card_id", "m_access"],
+      required:["_id", "m_name", "m_password", "m_access"],
       properties:{
         _id: { bsonType: "objectId"},
         m_name: {bsonType: ["null", "string"]},
-        m_card_id: {bsonType: ["null", "string"]},
+        m_password: {bsonType: ["null", "string"]},
         m_access: {bsonType: ["null", "string"]},
       },
       additionalProperties:false,
