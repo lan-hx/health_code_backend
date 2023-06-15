@@ -110,7 +110,7 @@ db.createCollection("Nucleic", {
           description: "核酸检测的id"
         },
         u_id: {
-          bsonType: "string",
+          bsonType: "objectId",
           description: "核酸检测用户的id"
         },
         
