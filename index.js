@@ -23,7 +23,7 @@ let POST;
 const connect_number = config.connect_port;
 
 const result = {
-  errno: 0,
+  error: 0,
   data: [
     {user: '张三', content: '留言1'},
     {user: '李四', content: '留言2'}
@@ -827,8 +827,10 @@ async function GetHealthCodeStatus(POST) {
       ret = 0;
     }else if(userInfo.health_state == "red"){
       ret = 1;
-    }else {
+    }else if(userInfo.health_state == "yellow"){
       ret = 2;
+    }else{
+      ret = 3;
     }
     if (!nucleicInfo) {
       return {
@@ -1345,6 +1347,7 @@ async function GetUserAll(POST) {
         card_id: item.u_card_id,
         address: item.u_addr,
         email: item.u_email,
+        health_code_status: item.health_status
       }
     })
 
@@ -1380,7 +1383,8 @@ async function SetUser(POST) {
         u_card_id: POST.card_id,
         u_phone: POST.phone,
         u_addr: POST.address,
-        u_email: POST.email
+        u_email: POST.email,
+        health_state: POST.health_code_status
       }
     };
 
@@ -1416,7 +1420,12 @@ async function AddUser(POST) {
         message: 'Invalid token'
       };
     }
-
+    if(POST.health_code_status > 3 || POST.health_code_status < 0){
+      return{
+        error: 1,
+        message: 'health code status wrong'
+      }
+    }
     const userCollection = database.collection('Users');
 
     // Create a new user object
@@ -1430,7 +1439,7 @@ async function AddUser(POST) {
       u_email: POST.email,
       u_addr: POST.address,
       health_code: new ObjectId(),
-      health_state:"green"
+      health_state:POST.health_code_status
     };
 
     // Insert the user document into the collection
@@ -1541,11 +1550,6 @@ async function GetHealthCodeAll(POST) {
       message: err.message
     };
   }
-}
-
-async function GetHealthCode() {
-  await 1;
-  return 1;
 }
 
 async function SetHealthCode(POST) {
@@ -2294,8 +2298,8 @@ async function GetAdminUserAll(POST) {
       return {
         admin_user_id: item._id,
         admin_user_name: item.m_name,
-        admin_user_phone: item.m_access,
-        admin_user_access: item.m_password
+        admin_user_access: item.m_access,
+        admin_user_password: item.m_password
       }
     })
 
@@ -2379,7 +2383,7 @@ async function AddAdminUser(POST) {
     return {
       error: 0,
       message: 'Admin user added successfully',
-      insertedId: result.insertedId
+      admin_user_id: admin._id
     };
   } catch (err) {
     return {
