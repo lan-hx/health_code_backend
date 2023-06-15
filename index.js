@@ -1853,8 +1853,8 @@ async function AddPlaces(POST) {
       p_addr_string: POST.place_addr_string,
       kind: "other",
       p_addr: {
-        latitude: parseFloat(POST.latitude),
-        longitude: parseFloat(POST.longitude)
+        latitude: parseFloat(POST.place_addr.latitude),
+        longitude: parseFloat(POST.place_addr.longitude)
       }
     };
 
