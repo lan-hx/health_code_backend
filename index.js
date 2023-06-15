@@ -5,9 +5,9 @@ const {MongoClient, ObjectId} = require("mongodb");
 const Server = require('mongodb').Server;
 const {getDistance} = require('geolib');
 const express = require('express');
-const { connect } = require('http2');
+const {connect} = require('http2');
 const app = express();
-    
+
 // Replace the uri string with your connection string.
 const config = require('./config/config.json');
 
@@ -31,7 +31,7 @@ const result = {
 }
 
 const state_map = ['green', 'yellow', 'red', 'grey'];
-const state_map_chinese = ['绿码', '黄码', '红码', '灰码'];
+const state_map_chinese = {'green': '绿码', 'yellow': '黄码', 'red': '红码', 'grey': '灰码'};
 const state_rev_map = {
   'green': 0,
   'yellow': 1,
@@ -39,12 +39,12 @@ const state_rev_map = {
   'grey': 3,
 }
 
-const nucleic_map = ["negtive","positive_more", "positive_one", "absence"];
+const nucleic_map = ["negtive", "positive_more", "positive_one", "absence"];
 const nucleic_rev_map = {
-  "negtive":0 ,
-  "positive_more":1,
-  "positive_one":2,
-  "absence":3,
+  "negtive": 0,
+  "positive_more": 1,
+  "positive_one": 2,
+  "absence": 3,
 }
 
 const buffers = [];
@@ -52,7 +52,7 @@ const buffers = [];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/LoginUser', (req, res) =>{
+app.post('/LoginUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -66,7 +66,7 @@ app.post('/LoginUser', (req, res) =>{
 
 });
 
-app.post('/LoginAdminUser', (req, res) =>{
+app.post('/LoginAdminUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -81,7 +81,7 @@ app.post('/LoginAdminUser', (req, res) =>{
 });
 
 
-app.post('/GetHealthCodeStatus', (req, res) =>{
+app.post('/GetHealthCodeStatus', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -94,7 +94,7 @@ app.post('/GetHealthCodeStatus', (req, res) =>{
   }
 });
 
-app.post('/GetUserInfo', (req, res) =>{
+app.post('/GetUserInfo', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -107,7 +107,7 @@ app.post('/GetUserInfo', (req, res) =>{
   }
 });
 
-app.post('/GetTests', (req, res) =>{
+app.post('/GetTests', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -120,7 +120,7 @@ app.post('/GetTests', (req, res) =>{
   }
 });
 
-app.post('/GetNotifications', (req, res) =>{
+app.post('/GetNotifications', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -134,7 +134,7 @@ app.post('/GetNotifications', (req, res) =>{
 });
 
 
-app.post('/GetTestStationList', (req, res) =>{
+app.post('/GetTestStationList', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -147,7 +147,7 @@ app.post('/GetTestStationList', (req, res) =>{
   }
 });
 
-app.post('/GetHealthCodeComplainList', (req, res) =>{
+app.post('/GetHealthCodeComplainList', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -160,7 +160,7 @@ app.post('/GetHealthCodeComplainList', (req, res) =>{
   }
 });
 
-app.post('/GetVaccinumList', (req, res) =>{
+app.post('/GetVaccinumList', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -172,7 +172,7 @@ app.post('/GetVaccinumList', (req, res) =>{
     });
   }
 });
-app.post('/GetVaccinumAppointmentAddress', (req, res) =>{
+app.post('/GetVaccinumAppointmentAddress', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -185,7 +185,7 @@ app.post('/GetVaccinumAppointmentAddress', (req, res) =>{
   }
 });
 
-app.post('/GetVaccinumAppointmentState', (req, res) =>{
+app.post('/GetVaccinumAppointmentState', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -198,7 +198,7 @@ app.post('/GetVaccinumAppointmentState', (req, res) =>{
   }
 });
 
-app.post('/ScanLocationCode', (req, res) =>{
+app.post('/ScanLocationCode', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -211,7 +211,7 @@ app.post('/ScanLocationCode', (req, res) =>{
   }
 });
 
-app.post('/SetUserInfo', (req, res) =>{
+app.post('/SetUserInfo', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -224,7 +224,7 @@ app.post('/SetUserInfo', (req, res) =>{
   }
 });
 
-app.post('/HealthCodeComplain', (req, res) =>{
+app.post('/HealthCodeComplain', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -237,7 +237,7 @@ app.post('/HealthCodeComplain', (req, res) =>{
   }
 });
 
-app.post('/AppointVaccinum', (req, res) =>{
+app.post('/AppointVaccinum', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -250,7 +250,7 @@ app.post('/AppointVaccinum', (req, res) =>{
   }
 });
 
-app.post('/VaccinumAppointRetract', (req, res) =>{
+app.post('/VaccinumAppointRetract', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -263,7 +263,7 @@ app.post('/VaccinumAppointRetract', (req, res) =>{
   }
 });
 
-app.post('/GetHealthCode', (req, res) =>{
+app.post('/GetHealthCode', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -276,7 +276,7 @@ app.post('/GetHealthCode', (req, res) =>{
   }
 });
 
-app.post('/SetHealthCode', (req, res) =>{
+app.post('/SetHealthCode', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -289,7 +289,7 @@ app.post('/SetHealthCode', (req, res) =>{
   }
 });
 
-app.post('/GetUserAll', (req, res) =>{
+app.post('/GetUserAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -302,7 +302,7 @@ app.post('/GetUserAll', (req, res) =>{
   }
 });
 
-app.post('/SetUser', (req, res) =>{
+app.post('/SetUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -316,7 +316,7 @@ app.post('/SetUser', (req, res) =>{
 });
 
 
-app.post('/AddUser', (req, res) =>{
+app.post('/AddUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -329,7 +329,7 @@ app.post('/AddUser', (req, res) =>{
   }
 });
 
-app.post('/DeleteUser', (req, res) =>{
+app.post('/DeleteUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -342,7 +342,7 @@ app.post('/DeleteUser', (req, res) =>{
   }
 });
 
-app.post('/GetStatisticsData', (req, res) =>{
+app.post('/GetStatisticsData', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -355,7 +355,7 @@ app.post('/GetStatisticsData', (req, res) =>{
   }
 });
 
-app.post('/GetHealthCodeAll', (req, res) =>{
+app.post('/GetHealthCodeAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -368,7 +368,7 @@ app.post('/GetHealthCodeAll', (req, res) =>{
   }
 });
 
-app.post('/GetVisitPlacesAll', (req, res) =>{
+app.post('/GetVisitPlacesAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -381,7 +381,7 @@ app.post('/GetVisitPlacesAll', (req, res) =>{
   }
 });
 
-app.post('/GetVisitPlaces', (req, res) =>{
+app.post('/GetVisitPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -394,7 +394,7 @@ app.post('/GetVisitPlaces', (req, res) =>{
   }
 });
 
-app.post('/AddVisitPlaces', (req, res) =>{
+app.post('/AddVisitPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -407,7 +407,7 @@ app.post('/AddVisitPlaces', (req, res) =>{
   }
 });
 
-app.post('/DeleteVisitPlaces', (req, res) =>{
+app.post('/DeleteVisitPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -421,7 +421,7 @@ app.post('/DeleteVisitPlaces', (req, res) =>{
 });
 
 
-app.post('/GetVaccinationAll', (req, res) =>{
+app.post('/GetVaccinationAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -434,7 +434,7 @@ app.post('/GetVaccinationAll', (req, res) =>{
   }
 });
 
-app.post('/GetVaccination', (req, res) =>{
+app.post('/GetVaccination', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -447,7 +447,7 @@ app.post('/GetVaccination', (req, res) =>{
   }
 });
 
-app.post('/AddVaccination', (req, res) =>{
+app.post('/AddVaccination', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -461,7 +461,7 @@ app.post('/AddVaccination', (req, res) =>{
 });
 
 
-app.post('/DeleteVaccination', (req, res) =>{
+app.post('/DeleteVaccination', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -475,7 +475,7 @@ app.post('/DeleteVaccination', (req, res) =>{
 });
 
 
-app.post('/GetPlacesAll', (req, res) =>{
+app.post('/GetPlacesAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -489,7 +489,7 @@ app.post('/GetPlacesAll', (req, res) =>{
 });
 
 
-app.post('/GetPlaces', (req, res) =>{
+app.post('/GetPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -503,7 +503,7 @@ app.post('/GetPlaces', (req, res) =>{
 });
 
 
-app.post('/AddPlaces', (req, res) =>{
+app.post('/AddPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -517,7 +517,7 @@ app.post('/AddPlaces', (req, res) =>{
 });
 
 
-app.post('/DeletePlaces', (req, res) =>{
+app.post('/DeletePlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -531,7 +531,7 @@ app.post('/DeletePlaces', (req, res) =>{
 });
 
 
-app.post('/SetPlaces', (req, res) =>{
+app.post('/SetPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -545,8 +545,7 @@ app.post('/SetPlaces', (req, res) =>{
 });
 
 
-
-app.post('/GetVaccinationPlacesAll', (req, res) =>{
+app.post('/GetVaccinationPlacesAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -560,8 +559,7 @@ app.post('/GetVaccinationPlacesAll', (req, res) =>{
 });
 
 
-
-app.post('/AddVaccinationPlaces', (req, res) =>{
+app.post('/AddVaccinationPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -575,7 +573,7 @@ app.post('/AddVaccinationPlaces', (req, res) =>{
 });
 
 
-app.post('/DeleteVaccinationPlaces', (req, res) =>{
+app.post('/DeleteVaccinationPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -589,7 +587,7 @@ app.post('/DeleteVaccinationPlaces', (req, res) =>{
 });
 
 
-app.post('/SetVaccinationPlaces', (req, res) =>{
+app.post('/SetVaccinationPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -603,8 +601,7 @@ app.post('/SetVaccinationPlaces', (req, res) =>{
 });
 
 
-
-app.post('/GetNucleicPlacesAll', (req, res) =>{
+app.post('/GetNucleicPlacesAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -618,8 +615,7 @@ app.post('/GetNucleicPlacesAll', (req, res) =>{
 });
 
 
-
-app.post('/AddNucleicPlaces', (req, res) =>{
+app.post('/AddNucleicPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -633,7 +629,7 @@ app.post('/AddNucleicPlaces', (req, res) =>{
 });
 
 
-app.post('/DeleteNucleicPlaces', (req, res) =>{
+app.post('/DeleteNucleicPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -647,7 +643,7 @@ app.post('/DeleteNucleicPlaces', (req, res) =>{
 });
 
 
-app.post('/SetNucleicPlaces', (req, res) =>{
+app.post('/SetNucleicPlaces', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -661,10 +657,7 @@ app.post('/SetNucleicPlaces', (req, res) =>{
 });
 
 
-
-
-
-app.post('/SetVaccination', (req, res) =>{
+app.post('/SetVaccination', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -678,7 +671,7 @@ app.post('/SetVaccination', (req, res) =>{
 });
 
 
-app.post('/GetNucleicAll', (req, res) =>{
+app.post('/GetNucleicAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -692,7 +685,7 @@ app.post('/GetNucleicAll', (req, res) =>{
 });
 
 
-app.post('/GetNucleic', (req, res) =>{
+app.post('/GetNucleic', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -706,7 +699,7 @@ app.post('/GetNucleic', (req, res) =>{
 });
 
 
-app.post('/SetNucleic', (req, res) =>{
+app.post('/SetNucleic', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -720,7 +713,7 @@ app.post('/SetNucleic', (req, res) =>{
 });
 
 
-app.post('/AddNucleic', (req, res) =>{
+app.post('/AddNucleic', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -734,7 +727,7 @@ app.post('/AddNucleic', (req, res) =>{
 });
 
 
-app.post('/DeleteNucleic', (req, res) =>{
+app.post('/DeleteNucleic', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -748,7 +741,7 @@ app.post('/DeleteNucleic', (req, res) =>{
 });
 
 
-app.post('/GetAdminUserAll', (req, res) =>{
+app.post('/GetAdminUserAll', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -761,7 +754,7 @@ app.post('/GetAdminUserAll', (req, res) =>{
   }
 });
 
-app.post('/GetAdminUser', (req, res) =>{
+app.post('/GetAdminUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -774,7 +767,7 @@ app.post('/GetAdminUser', (req, res) =>{
   }
 });
 
-app.post('/SetAdminUser', (req, res) =>{
+app.post('/SetAdminUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -788,7 +781,7 @@ app.post('/SetAdminUser', (req, res) =>{
 });
 
 
-app.post('/AddAdminUser', (req, res) =>{
+app.post('/AddAdminUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -801,7 +794,7 @@ app.post('/AddAdminUser', (req, res) =>{
   }
 });
 
-app.post('/DeleteAdminUser', (req, res) =>{
+app.post('/DeleteAdminUser', (req, res) => {
   let str = '';
   const i = 0;
 
@@ -814,7 +807,9 @@ app.post('/DeleteAdminUser', (req, res) =>{
   }
 });
 
-app.listen(connect_number,()=>{ console.log('listening to port:', connect_number)});
+app.listen(connect_number, () => {
+  console.log('listening to port:', connect_number)
+});
 
 
 async function LoginUser(POST) {
@@ -839,7 +834,7 @@ async function LoginUser(POST) {
         message: 'User not found'
       };
     }
-    
+
 
     console.log("user found ...");
 
@@ -891,8 +886,8 @@ async function LoginAdminUser(POST) {
         message: 'Admin User not found'
       };
     }
-    
-    if( admin.m_password != POST.password){
+
+    if (admin.m_password != POST.password) {
       return {
         error: 1,
         message: 'Wrong Password'
@@ -922,7 +917,6 @@ async function LoginAdminUser(POST) {
     };
   }
 }
-
 
 
 async function GetHealthCodeStatus(POST) {
@@ -959,20 +953,20 @@ async function GetHealthCodeStatus(POST) {
     const nuclequery = {u_id: userInfo._id}
     const nucleicInfo = await nucleicCollection.findOne(nuclequery);
     ret = 0
-    if(userInfo.health_state == "green"){
+    if (userInfo.health_state == "green") {
       ret = 0;
-    }else if(userInfo.health_state == "red"){
+    } else if (userInfo.health_state == "red") {
       ret = 1;
-    }else if(userInfo.health_state == "yellow"){
+    } else if (userInfo.health_state == "yellow") {
       ret = 2;
-    }else{
+    } else {
       ret = 3;
     }
     if (!nucleicInfo) {
       return {
         error: 0,
         status: ret,
-        health_code_string: userInfo.health_code + Math.floor(Math.random()*10000),
+        health_code_string: userInfo.health_code + Math.floor(Math.random() * 10000),
         card_id: userInfo.u_card_id,
         latest_test: {
           // test_time: nucleicInfo.time,
@@ -1342,7 +1336,7 @@ async function ScanLocationCode() {
       error: 0,
       place_name: placeInfo.p_name,
       status: state_rev_map[userInfo.health_state],
-      health_code_string: userInfo.u_id + placeInfo.p_id + Math.floor(Math.random()*10000)
+      health_code_string: userInfo.u_id + placeInfo.p_id + Math.floor(Math.random() * 10000)
     }
   } catch (err) {
     return {
@@ -1478,17 +1472,17 @@ async function GetUserAll(POST) {
 
     const userCollection = database.collection('Users');
     const users = await userCollection.find({}).toArray();
-    
-    const ret_users = users.map((item)=>{
+
+    const ret_users = users.map((item) => {
 
       ret = 0
-      if(item.health_state == "green"){
+      if (item.health_state == "green") {
         ret = 0;
-      }else if(item.health_state == "red"){
+      } else if (item.health_state == "red") {
         ret = 1;
-      }else if(item.health_state == "yellow"){
+      } else if (item.health_state == "yellow") {
         ret = 2;
-      }else{
+      } else {
         ret = 3;
       }
       return {
@@ -1574,8 +1568,8 @@ async function AddUser(POST) {
         message: 'Invalid token'
       };
     }
-    if(POST.health_code_status > 3 || POST.health_code_status < 0){
-      return{
+    if (POST.health_code_status > 3 || POST.health_code_status < 0) {
+      return {
         error: 1,
         message: 'health code status wrong'
       }
@@ -1593,7 +1587,7 @@ async function AddUser(POST) {
       u_email: POST.email,
       u_addr: POST.address,
       health_code: new ObjectId(),
-      health_state:POST.health_code_status
+      health_state: POST.health_code_status
     };
 
     // Insert the user document into the collection
@@ -1660,10 +1654,12 @@ async function GetStatisticsData(POST) {
 
     const userCollection = database.collection('Users');
 
-    const statisticsData = await userCollection.aggregate([
-      {$group: {_id:"$health_code", value: {$sum: 1}}},
-      {$project: {type: '$_id', value: '$value', _id:0}}
-    ]).toArray().map(item=>{
+    const statisticsData1 = await userCollection.aggregate([
+      {$group: {_id: "$health_state", value: {$sum: 1}}},
+      {$project: {type: '$_id', value: '$value', _id: 0}}
+    ]).toArray()
+
+    const statisticsData = statisticsData1.map(item => {
       return {
         type: state_map_chinese[item.type],
         value: item.value
@@ -1871,8 +1867,8 @@ async function GetNucleicAll(POST) {
 
     const nucleicCollection = database.collection('Nucleic');
     const nucleicRecords = await nucleicCollection.find().toArray();
-    
-    const ret_nucleics = nucleicRecords.map((item)=>{
+
+    const ret_nucleics = nucleicRecords.map((item) => {
       return {
         nucleic_id: item._id,
         user_id: item.u_id,
@@ -2028,10 +2024,9 @@ async function GetPlacesAll(POST) {
     const query = {kind: "other"};
     const places = await placeCollection.find(query).toArray();
     // const places = await placeCollection.find().toArray();
-    
 
-    
-    const ret_places = places.map((item)=>{
+
+    const ret_places = places.map((item) => {
       return {
         place_id: item._id,
         place_name: item.p_name,
@@ -2157,7 +2152,7 @@ async function SetPlaces(POST) {
     if (updateResult.modifiedCount === 0) {
       return {
         error: 1,
-        message: 'Place update fail' 
+        message: 'Place update fail'
       };
     }
 
@@ -2190,8 +2185,8 @@ async function GetVaccinationPlacesAll(POST) {
     const places = await placeCollection.find(query).toArray();
     // const places = await placeCollection.find().toArray();
 
-    
-    const ret_places = places.map((item)=>{
+
+    const ret_places = places.map((item) => {
       return {
         place_id: item._id,
         place_name: item.p_name,
@@ -2335,7 +2330,6 @@ async function SetVaccinationPlaces(POST) {
 }
 
 
-
 async function GetNucleicPlacesAll(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
@@ -2350,8 +2344,8 @@ async function GetNucleicPlacesAll(POST) {
     const query = {kind: "nucleic"};
     const places = await placeCollection.find(query).toArray();
 
-    
-    const ret_places = places.map((item)=>{
+
+    const ret_places = places.map((item) => {
       return {
         place_id: item._id,
         place_name: item.p_name,
@@ -2493,7 +2487,6 @@ async function SetNucleicPlaces(POST) {
     };
   }
 }
-
 
 
 // async function GetVaccinationAll(POST) {
@@ -2687,7 +2680,6 @@ async function SetNucleicPlaces(POST) {
 // }
 
 
-
 async function GetVaccinationAll(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
@@ -2701,7 +2693,7 @@ async function GetVaccinationAll(POST) {
     const vaccinationCollection = database.collection('Vaccination');
     const vaccinationRecords = await vaccinationCollection.find().toArray();
 
-    const ret_vaccination = vaccinationRecords.map((item)=>{
+    const ret_vaccination = vaccinationRecords.map((item) => {
       return {
         vaccination_id: item._id,
         user_id: item.u_id,
@@ -2752,7 +2744,7 @@ async function AddVaccination(POST) {
       u_id: new ObjectId(POST.user_id),
       kind: POST.vaccination_kind,
       time: new Date(POST.vaccination_time),
-      counter: POST.counter
+      counter: POST.vaccination_counter
     };
 
     const result = await nucleicCollection.insertOne(nucleicRecord);
@@ -2760,7 +2752,7 @@ async function AddVaccination(POST) {
     return {
       error: 0,
       message: 'Vaccination record added successfully',
-      nucleic_id: nucleicRecord._id
+      vaccination_id: nucleicRecord._id
     };
   } catch (err) {
     return {
@@ -2787,7 +2779,7 @@ async function SetVaccination(POST) {
     // vaccination_counter: item.counter
     const nucleicCollection = database.collection('Vaccination');
     const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.nucleic_id)};
+    const query = {_id: new ObjectId(POST.vaccination_id)};
 
     const updateData = {
       $set: {
@@ -2834,7 +2826,7 @@ async function DeleteVaccination(POST) {
 
     const nucleicCollection = database.collection('Vaccination');
     const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.nucleic_id)};
+    const query = {_id: new ObjectId(POST.vaccination_id)};
 
     const result = await nucleicCollection.deleteOne(query);
 
@@ -2859,8 +2851,6 @@ async function DeleteVaccination(POST) {
 }
 
 
-
-
 async function GetAdminUserAll(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
@@ -2875,7 +2865,7 @@ async function GetAdminUserAll(POST) {
     const adminUsers = await adminCollection.find().toArray();
 
 
-    const ret_adminusers = adminUsers.map((item)=>{
+    const ret_adminusers = adminUsers.map((item) => {
       return {
         admin_user_id: item._id,
         admin_user_name: item.m_name,
