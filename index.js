@@ -2049,10 +2049,10 @@ async function SetPlaces(POST) {
     const updateFields = {};
     updateFields.p_name = POST.place_name;
     updateFields.kind = "other";
-    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr_string = POST.place_addr_string;
     updateFields.p_addr = {
-      latitude: parseFloat(POST.latitude),
-      longitude: parseFloat(POST.longitude)
+      latitude: parseFloat(POST.place_addr.latitude),
+      longitude: parseFloat(POST.place_addr.longitude)
     };
 
     const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
@@ -2060,7 +2060,7 @@ async function SetPlaces(POST) {
     if (updateResult.modifiedCount === 0) {
       return {
         error: 1,
-        message: 'Place not found'
+        message: 'Place update fail' 
       };
     }
 
@@ -2209,10 +2209,10 @@ async function SetVaccinationPlaces(POST) {
     const updateFields = {};
     updateFields.p_name = POST.place_name;
     updateFields.kind = "vaccination";
-    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr_string = POST.place_addr_string;
     updateFields.p_addr = {
-      latitude: parseFloat(POST.latitude),
-      longitude: parseFloat(POST.longitude)
+      latitude: parseFloat(POST.place_addr.latitude),
+      longitude: parseFloat(POST.place_addr.longitude)
     };
 
     const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
@@ -2369,10 +2369,10 @@ async function SetNucleicPlaces(POST) {
     const updateFields = {};
     updateFields.p_name = POST.place_name;
     updateFields.kind = "nucleic";
-    updateFields.p_addr_string = POST.p_addr_string;
+    updateFields.p_addr_string = POST.place_addr_string;
     updateFields.p_addr = {
-      latitude: parseFloat(POST.latitude),
-      longitude: parseFloat(POST.longitude)
+      latitude: parseFloat(POST.place_addr.latitude),
+      longitude: parseFloat(POST.place_addr.longitude)
     };
 
     const updateResult = await placeCollection.updateOne(query, {$set: updateFields});
