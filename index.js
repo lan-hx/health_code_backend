@@ -2490,51 +2490,6 @@ async function SetNucleicPlaces(POST) {
 
 
 
-async function GetVaccinationAll(POST) {
-  try {
-    const isValidToken = await verifyToken(POST.token);
-    if (!isValidToken) {
-      return {
-        error: 1,
-        message: 'Invalid token'
-      };
-    }
-
-    const vaccinationCollection = database.collection('Vaccination');
-    const usersCollection = database.collection('Users');
-    const placesCollection = database.collection('Places');
-
-    const vaccinations = await vaccinationCollection.find().toArray();
-
-    const populatedVaccinations = await Promise.all(vaccinations.map(async (vaccination) => {
-      const userId = vaccination.u_id;
-      const placeId = vaccination.p_id;
-
-      const user = await usersCollection.findOne({_id: userId});
-      const place = await placesCollection.findOne({_id: placeId});
-
-      return {
-        user_id: userId,
-        user_name: user.u_name,
-        user_card_id: user.card_id,
-        place_id: placeId,
-        place_name: place.p_name
-      };
-    }));
-
-    return {
-      error: 0,
-      message: 'Vaccination records retrieved successfully',
-      vaccinations: populatedVaccinations
-    };
-  } catch (err) {
-    return {
-      error: 1,
-      message: err.message
-    };
-  }
-}
-
 // async function GetVaccinationAll(POST) {
 //   try {
 //     const isValidToken = await verifyToken(POST.token);
@@ -2546,13 +2501,31 @@ async function GetVaccinationAll(POST) {
 //     }
 
 //     const vaccinationCollection = database.collection('Vaccination');
+//     const usersCollection = database.collection('Users');
+//     const placesCollection = database.collection('Places');
 
 //     const vaccinations = await vaccinationCollection.find().toArray();
+
+//     const populatedVaccinations = await Promise.all(vaccinations.map(async (vaccination) => {
+//       const userId = vaccination.u_id;
+//       const placeId = vaccination.p_id;
+
+//       const user = await usersCollection.findOne({_id: userId});
+//       const place = await placesCollection.findOne({_id: placeId});
+
+//       return {
+//         user_id: userId,
+//         user_name: user.u_name,
+//         user_card_id: user.card_id,
+//         place_id: placeId,
+//         place_name: place.p_name
+//       };
+//     }));
 
 //     return {
 //       error: 0,
 //       message: 'Vaccination records retrieved successfully',
-//       vaccinations
+//       vaccinations: populatedVaccinations
 //     };
 //   } catch (err) {
 //     return {
@@ -2562,12 +2535,154 @@ async function GetVaccinationAll(POST) {
 //   }
 // }
 
-async function GetVaccination() {
-  await 1;
-  return 1;
-}
+// // async function GetVaccinationAll(POST) {
+// //   try {
+// //     const isValidToken = await verifyToken(POST.token);
+// //     if (!isValidToken) {
+// //       return {
+// //         error: 1,
+// //         message: 'Invalid token'
+// //       };
+// //     }
 
-async function AddVaccination(POST) {
+// //     const vaccinationCollection = database.collection('Vaccination');
+
+// //     const vaccinations = await vaccinationCollection.find().toArray();
+
+// //     return {
+// //       error: 0,
+// //       message: 'Vaccination records retrieved successfully',
+// //       vaccinations
+// //     };
+// //   } catch (err) {
+// //     return {
+// //       error: 1,
+// //       message: err.message
+// //     };
+// //   }
+// // }
+
+
+// async function AddVaccination(POST) {
+//   try {
+//     const isValidToken = await verifyToken(POST.token);
+//     if (!isValidToken) {
+//       return {
+//         error: 1,
+//         message: 'Invalid token'
+//       };
+//     }
+
+//     const vaccinationCollection = database.collection('Vaccination');
+//     // const ObjectId = require('mongodb').ObjectId;
+
+//     const vaccination = {
+//       _id: new ObjectId(),
+//       u_id: new ObjectId(POST.user_id),
+//       p_id: new ObjectId(POST.place_id),
+//       kind: POST.Vaccination_kind,
+//       time: new Date()
+//     };
+
+//     const result = await vaccinationCollection.insertOne(vaccination);
+
+//     return {
+//       error: 0,
+//       message: 'Vaccination added successfully',
+//       vaccination_id: vaccination._id
+//     };
+//   } catch (err) {
+//     return {
+//       error: 1,
+//       message: err.message
+//     };
+//   }
+// }
+
+// async function DeleteVaccination(POST) {
+//   try {
+//     const isValidToken = await verifyToken(POST.token);
+//     if (!isValidToken) {
+//       return {
+//         error: 1,
+//         message: 'Invalid token'
+//       };
+//     }
+
+//     const vaccinationCollection = database.collection('Vaccination');
+//     // const ObjectId = require('mongodb').ObjectId;
+//     const query = {_id: new ObjectId(POST.Vaccination_id)};
+
+//     const result = await vaccinationCollection.deleteOne(query);
+
+//     if (result.deletedCount === 0) {
+//       return {
+//         error: 1,
+//         message: 'Vaccination not found'
+//       };
+//     }
+
+//     return {
+//       error: 0,
+//       message: 'Vaccination deleted successfully',
+//       vaccination_id: POST.Vaccination_id
+//     };
+//   } catch (err) {
+//     return {
+//       error: 1,
+//       message: err.message
+//     };
+//   }
+// }
+
+// async function SetVaccination(POST) {
+//   try {
+//     const isValidToken = await verifyToken(POST.token);
+//     if (!isValidToken) {
+//       return {
+//         error: 1,
+//         message: 'Invalid token'
+//       };
+//     }
+
+//     const vaccinationCollection = database.collection('Vaccination');
+//     const ObjectId = require('mongodb').ObjectId;
+//     const query = {_id: new ObjectId(POST.Vaccination_id)};
+
+//     const updateData = {
+//       $set: {
+//         Vaccination_kind: POST.Vaccination_kind,
+//         u_id: new ObjectId(POST.user_id),
+//         p_id: new ObjectId(POST.place_id),
+//         time: new Date()
+//       }
+//     };
+
+//     const result = await vaccinationCollection.updateOne(query, updateData);
+
+//     if (result.matchedCount === 0) {
+//       return {
+//         error: 1,
+//         message: 'Vaccination record not found'
+//       };
+//     }
+
+//     return {
+//       error: 0,
+//       message: 'Vaccination record updated successfully',
+//       Vaccination_id: POST.Vaccination_id
+//     };
+//   } catch (err) {
+//     return {
+//       error: 1,
+//       message: err.message
+//     };
+//   }
+// }
+
+
+
+async function GetVaccinationAll(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -2578,22 +2693,68 @@ async function AddVaccination(POST) {
     }
 
     const vaccinationCollection = database.collection('Vaccination');
+    const vaccinationRecords = await vaccinationCollection.find().toArray();
+
+    const ret_vaccination = vaccinationRecords.map((item)=>{
+      return {
+        vaccination_id: item._id,
+        user_id: item.u_id,
+        vaccination_place: item.p_id,
+        vaccination_time: item.time.getTime(),
+        vaccination_kind: item.kind,
+        vaccination_counter: item.counter
+      }
+    })
+    return {
+      error: 0,
+      message: 'Nucleic records retrieved successfully',
+      result: ret_vaccination
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
+async function AddNucleic(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const nucleicCollection = database.collection('Vaccination');
     // const ObjectId = require('mongodb').ObjectId;
 
-    const vaccination = {
+    // vaccination_id: item._id,
+    // user_id: item.u_id,
+    // vaccination_place: item.p_id,
+    // vaccination_time: item.time.getTime(),
+    // vaccination_kind: item.kind,
+    // vaccination_counter: item.counter
+
+
+    const nucleicRecord = {
       _id: new ObjectId(),
+      p_id: new ObjectId(POST.vaccination_place),
       u_id: new ObjectId(POST.user_id),
-      p_id: new ObjectId(POST.place_id),
-      kind: POST.Vaccination_kind,
-      time: new Date()
+      kind: POST.vaccination_kind,
+      time: new Date(POST.vaccination_time),
+      counter: POST.counter
     };
 
-    const result = await vaccinationCollection.insertOne(vaccination);
+    const result = await nucleicCollection.insertOne(nucleicRecord);
 
     return {
       error: 0,
-      message: 'Vaccination added successfully',
-      vaccination_id: vaccination._id
+      message: 'Nucleic record added successfully',
+      nucleic_id: nucleicRecord._id
     };
   } catch (err) {
     return {
@@ -2603,7 +2764,7 @@ async function AddVaccination(POST) {
   }
 }
 
-async function DeleteVaccination(POST) {
+async function SetNucleic(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -2612,69 +2773,39 @@ async function DeleteVaccination(POST) {
         message: 'Invalid token'
       };
     }
-
-    const vaccinationCollection = database.collection('Vaccination');
-    // const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.Vaccination_id)};
-
-    const result = await vaccinationCollection.deleteOne(query);
-
-    if (result.deletedCount === 0) {
-      return {
-        error: 1,
-        message: 'Vaccination not found'
-      };
-    }
-
-    return {
-      error: 0,
-      message: 'Vaccination deleted successfully',
-      vaccination_id: POST.Vaccination_id
-    };
-  } catch (err) {
-    return {
-      error: 1,
-      message: err.message
-    };
-  }
-}
-
-async function SetVaccination(POST) {
-  try {
-    const isValidToken = await verifyToken(POST.token);
-    if (!isValidToken) {
-      return {
-        error: 1,
-        message: 'Invalid token'
-      };
-    }
-
-    const vaccinationCollection = database.collection('Vaccination');
+    // vaccination_id: item._id,
+    // user_id: item.u_id,
+    // vaccination_place: item.p_id,
+    // vaccination_time: item.time.getTime(),
+    // vaccination_kind: item.kind,
+    // vaccination_counter: item.counter
+    const nucleicCollection = database.collection('Vaccination');
     const ObjectId = require('mongodb').ObjectId;
-    const query = {_id: new ObjectId(POST.Vaccination_id)};
+    const query = {_id: new ObjectId(POST.nucleic_id)};
 
     const updateData = {
       $set: {
-        Vaccination_kind: POST.Vaccination_kind,
+        p_id: new ObjectId(POST.vaccination_place),
         u_id: new ObjectId(POST.user_id),
-        p_id: new ObjectId(POST.place_id),
-        time: new Date()
+        kind: POST.vaccination_kind,
+        time: new Date(POST.vaccination_time),
+        counter: POST.vaccination_counter
       }
     };
 
-    const result = await vaccinationCollection.updateOne(query, updateData);
+    const result = await nucleicCollection.updateOne(query, updateData);
 
     if (result.matchedCount === 0) {
       return {
         error: 1,
-        message: 'Vaccination record not found'
+        message: 'Nucleic record not found'
       };
     }
 
     return {
       error: 0,
-      message: 'Vaccination record updated successfully',
-      Vaccination_id: POST.Vaccination_id
+      message: 'Nucleic record updated successfully',
+      nucleic_id: POST.nucleic_id
     };
   } catch (err) {
     return {
@@ -2683,6 +2814,44 @@ async function SetVaccination(POST) {
     };
   }
 }
+
+
+async function DeleteNucleic(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const nucleicCollection = database.collection('Vaccination');
+    const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.nucleic_id)};
+
+    const result = await nucleicCollection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      return {
+        error: 1,
+        message: 'Nucleic record not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Nucleic record deleted successfully',
+      nucleic_id: POST.nucleic_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
 
 
 

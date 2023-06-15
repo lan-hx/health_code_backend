@@ -73,7 +73,7 @@ db.createCollection("Vaccination",{
     $jsonSchema:{
       bsonType:"object",
       title:"Admins Validation",
-      required:["_id", "u_id", "p_id", "kind", "time"],
+      required:["_id", "u_id", "p_id", "kind", "time", "counter"],
 
       properties:{
         _id: { bsonType: "objectId"},
@@ -82,9 +82,9 @@ db.createCollection("Vaccination",{
         
         p_id: {bsonType: "objectId"},
         
-        kind: {
-              enum: ["Corona", "Pfizer", "Beijing"]
-        },
+        counter: {bsonType: "int"},
+
+        kind: {bsonType: "string"},
 
         time: {
           bsonType: "date",
