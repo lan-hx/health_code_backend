@@ -958,8 +958,8 @@ async function GetHealthCodeStatus(POST) {
     }
 
     const nucleicCollection = database.collection('Nucleic');
-    const nuclequery = {u_id: userInfo._id}
-    const nucleicInfo = await nucleicCollection.findOne(nuclequery);
+    const nucleicRecords = await nucleicCollection.find({u_id:tokeninfo.u_id}).sort({time:-1}).toArray();
+    const nucleicInfo = nucleicRecords[0];
     ret = 0
     if (userInfo.health_state == "green") {
       ret = 0;
@@ -970,29 +970,18 @@ async function GetHealthCodeStatus(POST) {
     } else {
       ret = 3;
     }
-    if (!nucleicInfo) {
-      return {
-        error: 0,
-        status: ret,
-        health_code_string: userInfo.health_code + Math.floor(Math.random() * 10000),
-        card_id: userInfo.u_card_id,
-        latest_test: {
-          // test_time: nucleicInfo.time,
-          // test_result: nucleicInfo.kind
-        }
-      };
-    } else {
-      return {
-        error: 0,
-        status: ret,
-        health_code_string: userInfo.health_code,
-        card_id: userInfo.u_card_id,
-        latest_test: {
-          test_time: nucleicInfo.time,
-          test_result: nucleicInfo.kind
-        }
-      };
-    }
+
+    return {
+      error: 0,
+      status: ret,
+      health_code_string: userInfo._id.toString() + Math.floor(Math.random() * 10000).toString(),
+      card_id: userInfo.u_card_id,
+      latest_test: {
+        datetime: nucleicInfo?.time.getTime(),
+        result: (!nucleicInfo)?undefined:nucleic_rev_map[nucleicInfo.result]
+      }
+    };
+
   } catch (err) {
     return {
       error: 1,
@@ -1405,7 +1394,7 @@ async function GetVaccinumAppointmentState(POST) {
 
 }
 
-async function ScanLocationCode() {
+async function ScanLocationCode(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -1429,7 +1418,7 @@ async function ScanLocationCode() {
     }
 
     const placeCollection = await database.collection('Places');
-    const placeInfo = await placeCollection.findOne({p_id: POST.place_code_string});
+    const placeInfo = await placeCollection.findOne({_id:  new ObjectId(POST.place_code_string) });
     if (!placeInfo) {
       return {
         error: 1,
@@ -1438,20 +1427,28 @@ async function ScanLocationCode() {
     }
 
     const visitPlaceCollection = await database.collection('VisitPlace');
-    CurrentTime = new Date();
-    visitPlaceCollection.insertOne({
+    let CurrentTime = new Date();
+    await visitPlaceCollection.insertOne({
       _id: new ObjectId(),
-      p_id: POST.place_code_string,
+      p_id: new ObjectId(POST.place_code_string),
       u_id: userInfo._id,
       time: CurrentTime
     });
 
-    return {
+    const nucleicCollection = database.collection('Nucleic');
+    const nucleicRecords = await nucleicCollection.find({u_id:tokeninfo.u_id}).sort({time:-1}).toArray();
+
+    const ret = {
       error: 0,
+      latest_test: {datetime:nucleicRecords[0].time.getTime(),
+        result: nucleic_rev_map[nucleicRecords[0].result] },
       place_name: placeInfo.p_name,
       status: state_rev_map[userInfo.health_state],
-      health_code_string: userInfo.u_id + placeInfo.p_id + Math.floor(Math.random() * 10000)
-    }
+      health_code_string: userInfo._id.toString() + placeInfo._id.toString() + Math.floor(Math.random() * 10000).toString()
+    };
+    // ret['health_code_string'] = userInfo.u_id + placeInfo.p_id + Math.floor(Math.random() * 10000)
+
+    return ret;
   } catch (err) {
     return {
       error: 1,
