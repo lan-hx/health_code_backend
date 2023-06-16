@@ -1160,8 +1160,9 @@ async function GetNotifications(POST)
     
     return {
       error: 0,
-      status:userInfo.send_notification
+      status:userInfo.send_notification===1
     }
+
   } catch (err) {
     return {
       error: 1,
@@ -1678,7 +1679,8 @@ async function AddUser(POST) {
       u_email: POST.email,
       u_addr: POST.address,
       health_code: new ObjectId(),
-      health_state: state_map[POST.health_code_status]
+      health_state: state_map[POST.health_code_status],
+      send_notification:0
     };
 
     // Insert the user document into the collection

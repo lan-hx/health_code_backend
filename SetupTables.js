@@ -7,7 +7,7 @@ db.createCollection("Users", {
      $jsonSchema: {
         bsonType: "object",
         title: "Users Validation",
-        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone" ],
+        required: [ "_id", "u_name", "u_card_id", "u_email", "u_phone", "send_notification" ],
         properties: {
             _id: {bsonType: "objectId"},
             u_name: {bsonType: ["null", "string"]},
