@@ -1020,23 +1020,14 @@ async function GetUserInfo(POST) {
     }
 
     return {
-    
       error: 0,
-    
       message: 'User information retrieved successfully',
-    
-      name:userInfo.u_name,
-    
-      phone:userInfo.u_phone,
-    
-      card_id:userInfo.u_card_id,
-    
-      email:userInfo.u_email,
-    
-      address:userInfo.u_addr,
-    
-      sex:(userInfo.card_id[16]%2 ==0)?0:1
-    
+      name: userInfo.u_name,
+      phone: userInfo.u_phone,
+      card_id: userInfo.u_card_id,
+      email: userInfo.u_email,
+      address: userInfo.u_addr,
+      sex: (parseInt(userInfo.u_card_id[16]) % 2 === 0) ? 0 : 1
     };
   } catch (err) {
     return {
