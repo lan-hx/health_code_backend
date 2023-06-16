@@ -1071,11 +1071,10 @@ async function GetTests(POST) {
     }
 
     const nucleicCollection = await database.collection('Nucleic');
-    nucleicInfo = await nucleicCollection.find({u_id: userInfo._id}).toArray();
-    nucleicInfo = nucleicInfo.inverse();
+    const nucleicInfo = await nucleicCollection.find({u_id: userInfo._id}).sort({time:-1}).toArray();
     return {
       error: 0,
-      content: nucleicInfo.slice(POST.offset, POST.offset+POST.num)
+      content: nucleicInfo.reverse().slice(POST.offset, POST.offset+POST.num)
     }
   } catch (err) {
     return {
