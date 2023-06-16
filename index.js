@@ -1311,6 +1311,7 @@ async function GetVaccinumList() {
 
   const userCollection = await database.collection('Users');
   const tokenCollection = await database.collection("Tokens");
+  const placeCollction = await database.collection("Places");
   // const tokeninfo = tokenCollection.findOne({_id:new ObjectId(POST.token)});
   const query = {token: POST.token};
   const tokeninfo = await tokenCollection.findOne(query);
@@ -1323,17 +1324,23 @@ async function GetVaccinumList() {
   }
 
   const vaccinationCollection = await database.collection('Vaccination');
-  const vaccinationInfo = await vaccinationCollection.find({u_id: userInfo._id}).toArray();
+  const vaccinationInfo = await vaccinationCollection.find({u_id: userInfo._id}).sort({time:1}).toArray();
+  const ret=[]
+  for (let index = 0; index < vaccinationInfo.length; index++) {
+    const item = vaccinationInfo[index];
+    placeinfo = await placeCollction.findOne({_id:item.p_id});
+    ret.push({
+      "vaccinum_id":item._id,
+      "datetime":item.time.getTime(),
+      "address":placeinfo.p_name,
+      "counter":item.counter,
+      "kind":item.kind
+    })
+  }
 
   return {
     error: 0,
-    content: vaccinationInfo.map((item)=>{
-      return {
-        "vaccinum_id":item._id,
-        "datetime":item.time.getTime(),
-        "kind":item.kind
-      }
-    })
+    content: ret
   }
 }
 
