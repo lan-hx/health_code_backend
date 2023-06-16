@@ -1587,7 +1587,7 @@ async function AddUser(POST) {
       u_email: POST.email,
       u_addr: POST.address,
       health_code: new ObjectId(),
-      health_state: POST.health_code_status
+      health_state: state_map[POST.health_code_status]
     };
 
     // Insert the user document into the collection
