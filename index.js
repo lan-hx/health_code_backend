@@ -1071,10 +1071,11 @@ async function GetTests(POST) {
     }
 
     const nucleicCollection = await database.collection('Nucleic');
-    const nucleicInfo = await nucleicCollection.find({u_id: userInfo._id}).toArray();
+    nucleicInfo = await nucleicCollection.find({u_id: userInfo._id}).toArray();
+    nucleicInfo = nucleicInfo.inverse();
     return {
       error: 0,
-      content: nucleicInfo
+      content: nucleicInfo.slice(POST.offset, POST.offset+POST.num)
     }
   } catch (err) {
     return {
@@ -1197,7 +1198,7 @@ async function SetNotifications(POST)
 
     await userCollection.updateOne({_id:userInfo._id},{
       $set: {
-        send_notification:POST.status
+        send_notification:(POST.status)?1:0
       }
     })
     
