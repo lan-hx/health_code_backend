@@ -1366,7 +1366,7 @@ async function SetUserInfo(POST) {
     // const tokeninfo = tokenCollection.findOne({_id:ObjectId(POST.token)});
     const query = {token: POST.token};
     const tokeninfo = await tokenCollection.findOne(query);
-    const userInfo = await userCollection.findOne({_id: POST.user_id});
+    const userInfo = await userCollection.findOne({_id: tokeninfo.u_id});
     if (!userInfo) {
       return {
         error: 1,
