@@ -1072,9 +1072,18 @@ async function GetTests(POST) {
 
     const nucleicCollection = await database.collection('Nucleic');
     const nucleicInfo = await nucleicCollection.find({u_id: userInfo._id}).sort({time:-1}).toArray();
+    const res_list = nucleicInfo.reverse().slice(POST.offset, POST.offset+POST.num)
+    
     return {
       error: 0,
-      content: nucleicInfo.reverse().slice(POST.offset, POST.offset+POST.num)
+      content:res_list.map((item)=>{
+        return {
+          "test_id":item._id,
+          "result":nucleic_rev_map[item.result],
+          "date_time":item.time.getTime()
+        }
+      })
+   
     }
   } catch (err) {
     return {
