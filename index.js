@@ -2034,8 +2034,8 @@ async function SetNucleic(POST) {
 
     const updateData = {
       $set: {
-        p_id: new ObjectId(POST.p_id),
-        u_id: new ObjectId(POST.u_id),
+        p_id: new ObjectId(POST.place_id),
+        u_id: new ObjectId(POST.user_id),
         result: nucleic_map[POST.result],
         time: new Date(POST.datetime)
       }
