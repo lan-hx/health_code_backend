@@ -16,7 +16,8 @@ db.createCollection("Users", {
             u_phone: {bsonType: ["null", "string"]},
             u_addr: {bsonType: ["null", "string"]},
             health_code: {bsonType: "objectId"},
-            health_state: {enum: ["green", "yellow", "red", "grey"]}
+            health_state: {enum: ["green", "yellow", "red", "grey"]},
+            send_notification:{bsonType:"int"}
         },
         additionalProperties: false,
       }

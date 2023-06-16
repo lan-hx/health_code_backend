@@ -133,6 +133,14 @@ app.post('/GetNotifications', (req, res) => {
   }
 });
 
+app.post('/SetNotifications',(req,res)=>{
+  POST = req.body;
+  const result = SetNotifications(POST).then((response)=>{
+    res.writeHead(200, {'Content-type': 'application/json'});
+    res.end(JSON.stringify(response));
+  
+  })
+})
 
 app.post('/GetTestStationList', (req, res) => {
   let str = '';
@@ -1078,7 +1086,7 @@ async function GetTests(POST) {
 
 }
 
-async function GetNotifications(POST) {
+async function SendNotifications(POST) {
   try {
     const isValidToken = await verifyToken(POST.token);
     if (!isValidToken) {
@@ -1125,6 +1133,84 @@ async function GetNotifications(POST) {
   }
 
 }
+
+async function GetNotifications(POST)
+{
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const userCollection = await database.collection('Users');
+    const tokenCollection = await database.collection("Tokens");
+    // const tokeninfo = tokenCollection.findOne({_id:new ObjectId(POST.token)});
+    const query = {token: POST.token};
+    const tokeninfo = await tokenCollection.findOne(query);
+    const userInfo = await userCollection.findOne({_id: tokeninfo.u_id});
+    if (!userInfo) {
+      return {
+        error: 1,
+        message: 'User not found'
+      };
+    }
+    
+    return {
+      error: 0,
+      status:userInfo.send_notification
+    }
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  } 
+}
+
+async function SetNotifications(POST)
+{
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const userCollection = await database.collection('Users');
+    const tokenCollection = await database.collection("Tokens");
+    // const tokeninfo = tokenCollection.findOne({_id:new ObjectId(POST.token)});
+    const query = {token: POST.token};
+    const tokeninfo = await tokenCollection.findOne(query);
+    const userInfo = await userCollection.findOne({_id: tokeninfo.u_id});
+    if (!userInfo) {
+      return {
+        error: 1,
+        message: 'User not found'
+      };
+    }
+
+    await userCollection.updateOne({_id:userInfo._id},{
+      $set: {
+        send_notification:POST.status
+      }
+    })
+    
+    return {
+      error: 0
+    }
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
 
 async function GetTestStationList() {
   try {
