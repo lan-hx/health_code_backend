@@ -420,6 +420,20 @@ app.post('/DeleteVisitPlaces', (req, res) =>{
   }
 });
 
+app.post('/SetVisitPlaces', (req, res) =>{
+  let str = '';
+  const i = 0;
+
+  {
+    POST = (req.body);
+    const result = SetVisitPlaces(POST).then((response) => {
+      res.writeHead(200, {'Content-type': 'application/json'});
+      res.end(JSON.stringify(response));
+    });
+  }
+});
+
+
 
 app.post('/GetVaccinationAll', (req, res) =>{
   let str = '';
@@ -1766,11 +1780,20 @@ async function GetVisitPlacesAll(POST) {
     const visitPlaceCollection = database.collection('VisitPlace');
     const visitPlaces = await visitPlaceCollection.find().toArray();
 
+    
+    const ret_places = visitPlaces.map((item)=>{
+      return {
+        record_id: item._id,
+        user_id: item.u_id,
+        place_id: item.p_id,
+        time: item.time.getTime()
+      }
+    })
 
     return {
       error: 0,
       message: 'Visit places retrieved successfully',
-      visit_places: visitPlaces
+      result: ret_places
     };
   } catch (err) {
     return {
@@ -1778,12 +1801,6 @@ async function GetVisitPlacesAll(POST) {
       message: err.message
     };
   }
-}
-
-
-async function GetVisitPlaces() {
-  await 1;
-  return 1;
 }
 
 async function AddVisitPlaces(POST) {
@@ -1849,6 +1866,51 @@ async function DeleteVisitPlaces(POST) {
       error: 0,
       message: 'Visit place record deleted successfully',
       record_id: POST.record_id
+    };
+  } catch (err) {
+    return {
+      error: 1,
+      message: err.message
+    };
+  }
+}
+
+
+
+async function SetVisitPlaces(POST) {
+  try {
+    const isValidToken = await verifyToken(POST.token);
+    if (!isValidToken) {
+      return {
+        error: 1,
+        message: 'Invalid token'
+      };
+    }
+
+    const nucleicCollection = database.collection('VisitPlace');
+    const ObjectId = require('mongodb').ObjectId;
+    const query = {_id: new ObjectId(POST.record_id)};
+
+    const updateData = {
+      $set: {
+        p_id: new ObjectId(POST.p_id),
+        u_id: new ObjectId(POST.u_id),
+        time: new Date(POST.datetime)
+      }
+    };
+
+    const result = await nucleicCollection.updateOne(query, updateData);
+
+    if (result.matchedCount === 0) {
+      return {
+        error: 1,
+        message: 'Visit places record not found'
+      };
+    }
+
+    return {
+      error: 0,
+      message: 'Visit places record updated successfully'
     };
   } catch (err) {
     return {
