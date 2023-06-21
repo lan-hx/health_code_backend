@@ -1936,7 +1936,7 @@ async function AddVisitPlaces(POST) {
     return {
       error: 0,
       message: 'Visit place added successfully',
-      visit_record_id: visitRecord._id
+      record_id: visitRecord._id
     };
   } catch (err) {
     return {
