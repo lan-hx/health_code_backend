@@ -1911,7 +1911,7 @@ async function AddVisitPlaces(POST) {
       _id: new ObjectId(),
       u_id: new ObjectId(POST.user_id),
       p_id: new ObjectId(POST.place_id),
-      time: new Date()
+      time: new Date(POST.time)
     };
 
     const result = await visitPlaceCollection.insertOne(visitRecord);
